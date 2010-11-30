@@ -36,6 +36,7 @@ public class Game extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		container.setVSync(true);
+		container.setTargetFrameRate(60); 
 		player = new MyPlayer(32, 32, "res/figure.png");
 		sheet = player.getImg();
 		map = new TiledMap("res/map.tmx");	
@@ -91,7 +92,7 @@ public class Game extends BasicGame {
 			set_bomb = true;
 		}
 		camera.centerOn(player.getX(), player.getY());
-	}
+	} 
 	@Override
 	public void render(GameContainer container, Graphics g)  {
 		map.render(0, 0);
@@ -103,7 +104,7 @@ public class Game extends BasicGame {
 		g.drawAnimation(player_anim, player.getX(), player.getY());
 		
 		if (set_bomb) {
-			bomb.draw(bombX, bombY);
+			bomb.getImage().draw(bombX, bombY);
 		}
 	}
 	public static void main(String[] argv) throws SlickException {

@@ -31,4 +31,8 @@ public class MyBomb {
 		}
 	}
 	
+	public Image getImage(){
+		return image;
+	}
+	
 }
