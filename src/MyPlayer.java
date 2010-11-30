@@ -8,10 +8,11 @@ public class MyPlayer {
 	private int x;
 	private int y;
 	private SpriteSheet img;
-	private Point ruc;
-	private Point rlc;
-	private Point luc;
-	private Point llc;
+	
+	private Point ruc;	// right upper corner
+	private Point rlc;	// right lower corner
+	private Point luc;	// left upper corner
+	private Point llc;	// left lower corner
 	
 	public MyPlayer(int x, int y, String img) {
 		try {
@@ -61,21 +62,26 @@ public class MyPlayer {
 	}
 
 	public Point getRuc() {
+		ruc.x = x+32;
+		ruc.y = y;
 		return ruc;
 	}
 
 	public Point getRlc() {
+		rlc.x = x +32;
+		rlc.y = y+32;
 		return rlc;
 	}
 
 	public Point getLuc() {
+		luc.x = x;
+		luc.y = y;
 		return luc;
 	}
 
 	public Point getLlc() {
+		llc.x = x;
+		llc.y = y +32;
 		return llc;
 	}
-	
-	
-	
 }

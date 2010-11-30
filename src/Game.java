@@ -49,11 +49,12 @@ public class Game extends BasicGame {
 			player_anim.addFrame(sheet.getSprite(frame,0), 150);
 		}
 		
+		blocked = new boolean[map.getWidth()][map.getHeight()];
 		for (int xAxis = 0; xAxis < map.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < map.getHeight(); yAxis++) {
 				int tileID = map.getTileId(xAxis, yAxis, 0);
 				String value = map.getTileProperty(tileID, "blocked", "false");
-				if (value.equals("true")) {
+				if (value.equals("1")) {
 					blocked[xAxis][yAxis] = true;
 				}
 			}
@@ -75,16 +76,52 @@ public class Game extends BasicGame {
 		
 		if (container.getInput().isKeyDown(Input.KEY_LEFT)) {
 				player_anim.setCurrentFrame(2);
-				player.setX(player.getX()-2);
+				int next_ux = ((int) player.getLuc().getX() - 2) / 32;
+				int next_uy = (int) (player.getLuc().getY() + 3) / 32;
+				
+				int next_lx = ((int) player.getLlc().getX() - 2) / 32;
+				int next_ly = (int) (player.getLlc().getY()- 3) / 32;
+				
+				if (blocked[next_ux][next_uy] || blocked[next_lx][next_ly]) {
+				} else {
+					player.setX(player.getX()-2);
+				}
 		} else if (container.getInput().isKeyDown(Input.KEY_RIGHT)) {
 				player_anim.setCurrentFrame(3);
-				player.setX(player.getX()+2);
+				int next_ux = ((int) player.getRuc().getX() + 1) / 32;
+				int next_uy = (int) (player.getRuc().getY() + 3) / 32;
+				
+				int next_lx = ((int) player.getRlc().getX() + 1) / 32;
+				int next_ly = (int) (player.getRlc().getY() - 3) / 32;
+				
+				if (blocked[next_ux][next_uy] || blocked[next_lx][next_ly]) {
+				} else {
+					player.setX(player.getX()+2);
+				}
 		} else if (container.getInput().isKeyDown(Input.KEY_UP)) {
 				player_anim.setCurrentFrame(1);
-				player.setY(player.getY()-2);
+				int next_lux = ((int) player.getLuc().getX() + 3) / 32;
+				int next_luy = (int) (player.getLuc().getY() - 2) / 32;
+				
+				int next_rux = ((int) player.getRuc().getX() - 3) / 32;
+				int next_ruy = (int) (player.getRuc().getY() - 2) / 32;
+				
+				if (blocked[next_lux][next_luy] || blocked[next_rux][next_ruy]) {
+				} else {
+					player.setY(player.getY()-2);
+				}
 		} else if (container.getInput().isKeyDown(Input.KEY_DOWN)) {
-			player_anim.setCurrentFrame(0);
-				player.setY(player.getY()+2);
+				player_anim.setCurrentFrame(0);
+				int next_llx = ((int) player.getLlc().getX() + 3) / 32;
+				int next_lly = (int) (player.getLlc().getY() + 2) / 32;
+				
+				int next_rlx = ((int) player.getRlc().getX() - 3) / 32;
+				int next_rly = (int) (player.getRlc().getY() + 2) / 32;
+				
+				if (blocked[next_llx][next_lly] || blocked[next_rlx][next_rly]) {
+				} else {
+					player.setY(player.getY()+2);
+				}
 		}
 		if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
 			bombX = player.getX();
