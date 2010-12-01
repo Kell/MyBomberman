@@ -11,7 +11,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
  
 public class Game extends BasicGame {
-	private boolean blocked[][];
+	public static boolean blocked[][];
 	private TiledMap map;
 	private MyPlayer player;
 	private Animation player_anim;
@@ -75,51 +75,28 @@ public class Game extends BasicGame {
 		lo_tile = map.getTileId(player.getX() / 32, lo_tile, 0);
 		
 		if (container.getInput().isKeyDown(Input.KEY_LEFT)) {
-				player_anim.setCurrentFrame(2);
-				int next_ux = ((int) player.getLuc().getX() - 2) / 32;
-				int next_uy = (int) (player.getLuc().getY() + 3) / 32;
+			player_anim.setCurrentFrame(2);
 				
-				int next_lx = ((int) player.getLlc().getX() - 2) / 32;
-				int next_ly = (int) (player.getLlc().getY()- 3) / 32;
-				
-				if (blocked[next_ux][next_uy] || blocked[next_lx][next_ly]) {
-				} else {
-					player.setX(player.getX()-2);
-				}
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 32, 32, 4);			
+			if (walkable) {
+				player.setX(player.getX()-2);
+			}
 		} else if (container.getInput().isKeyDown(Input.KEY_RIGHT)) {
-				player_anim.setCurrentFrame(3);
-				int next_ux = ((int) player.getRuc().getX() + 1) / 32;
-				int next_uy = (int) (player.getRuc().getY() + 3) / 32;
-				
-				int next_lx = ((int) player.getRlc().getX() + 1) / 32;
-				int next_ly = (int) (player.getRlc().getY() - 3) / 32;
-				
-				if (blocked[next_ux][next_uy] || blocked[next_lx][next_ly]) {
-				} else {
-					player.setX(player.getX()+2);
-				}
+			player_anim.setCurrentFrame(3);
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 32, 32, 2);
+			if (walkable) {
+				player.setX(player.getX()+2);
+			}
 		} else if (container.getInput().isKeyDown(Input.KEY_UP)) {
-				player_anim.setCurrentFrame(1);
-				int next_lux = ((int) player.getLuc().getX() + 3) / 32;
-				int next_luy = (int) (player.getLuc().getY() - 2) / 32;
-				
-				int next_rux = ((int) player.getRuc().getX() - 3) / 32;
-				int next_ruy = (int) (player.getRuc().getY() - 2) / 32;
-				
-				if (blocked[next_lux][next_luy] || blocked[next_rux][next_ruy]) {
-				} else {
-					player.setY(player.getY()-2);
-				}
+			player_anim.setCurrentFrame(1);
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 32, 32, 1);
+			if (walkable) {
+				player.setY(player.getY()-2);
+			}
 		} else if (container.getInput().isKeyDown(Input.KEY_DOWN)) {
 				player_anim.setCurrentFrame(0);
-				int next_llx = ((int) player.getLlc().getX() + 3) / 32;
-				int next_lly = (int) (player.getLlc().getY() + 2) / 32;
-				
-				int next_rlx = ((int) player.getRlc().getX() - 3) / 32;
-				int next_rly = (int) (player.getRlc().getY() + 2) / 32;
-				
-				if (blocked[next_llx][next_lly] || blocked[next_rlx][next_rly]) {
-				} else {
+				boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 32, 32, 3);
+				if (walkable) {
 					player.setY(player.getY()+2);
 				}
 		}
