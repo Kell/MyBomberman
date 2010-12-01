@@ -1,3 +1,4 @@
+import org.lwjgl.opengl.Drawable;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -18,8 +19,6 @@ public class Game extends BasicGame {
 	private SpriteSheet sheet;
 	private boolean set_bomb = false;
 	private MyBomb bomb = null;
-	private float bombX = 0;
-	private float bombY = 0;
 	private int cur_tile;
 	private int l_tile;
 	private int r_tile;
@@ -40,7 +39,7 @@ public class Game extends BasicGame {
 		player = new MyPlayer(32, 32, "res/figure.png");
 		sheet = player.getImg();
 		map = new TiledMap("res/map.tmx");	
-		bomb = new MyBomb("res/bomb.png"); 
+		bomb = new MyBomb("res/bomb_anim.png");
 		camera = new Camera(container, map);
 		
 		player_anim = new Animation();
@@ -101,8 +100,8 @@ public class Game extends BasicGame {
 				}
 		}
 		if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
-			bombX = player.getX();
-			bombY = player.getY();
+			bomb.setX(player.getX());
+			bomb.setY(player.getY());
 			set_bomb = true;
 		}
 		camera.centerOn(player.getX(), player.getY());
@@ -117,8 +116,9 @@ public class Game extends BasicGame {
 		g.drawString("lower TILE: "+lo_tile, 700, 10);
 		g.drawAnimation(player_anim, player.getX(), player.getY());
 		
+		
 		if (set_bomb) {
-			bomb.getImage().draw(bombX, bombY);
+			g.drawAnimation(bomb.getAnimation(), bomb.getX(), bomb.getY());
 		}
 	}
 	public static void main(String[] argv) throws SlickException {
