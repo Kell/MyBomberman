@@ -1,6 +1,3 @@
-import java.awt.Point;
-
-
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
