@@ -18,7 +18,6 @@ public class Game extends BasicGame {
 	private MyPlayer player;
 	private Animation player_anim;
 	private SpriteSheet sheet;
-	private boolean set_bomb = false;
 	private MyBomb bomb = null;
 	private int cur_tile;
 	private int l_tile;
@@ -64,8 +63,9 @@ public class Game extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta) {
 		long time = Sys.getTime();
-		if ((time - bomb.getSetTime()) >= bomb.getDuration()) {
-			set_bomb = false;
+		if (((time - bomb.getSetTime()) >= bomb.getDuration()) && bomb.isBomb_set()) {
+			bomb.setBomb_set(false);
+			bomb.setExplode(true);
 		}
 		 
 		cur_tile = (player.getX() + 16) / 32;
@@ -105,10 +105,10 @@ public class Game extends BasicGame {
 					player.setY(player.getY()+2);
 				}
 		}
-		if (container.getInput().isKeyPressed(Input.KEY_SPACE) && set_bomb == false) {
+		if (container.getInput().isKeyPressed(Input.KEY_SPACE) && bomb.isBomb_set() == false) {
 			bomb.setX(player.getX());
 			bomb.setY(player.getY());
-			set_bomb = true;
+			bomb.setBomb_set(true);
 			bomb.setSetTime(Sys.getTime());
 		}
 		camera.centerOn(player.getX(), player.getY());
@@ -124,8 +124,10 @@ public class Game extends BasicGame {
 		g.drawAnimation(player_anim, player.getX(), player.getY());
 		
 		
-		if (set_bomb) {
+		if (bomb.isBomb_set()) {
 			g.drawAnimation(bomb.getAnimation(), bomb.getX(), bomb.getY());
+		} else if (bomb.isExplode()) {
+			g.drawAnimation(bomb.getExpAnimation(), bomb.getX(), bomb.getY());
 		}
 	}
 	public static void main(String[] argv) throws SlickException {
