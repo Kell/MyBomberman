@@ -7,7 +7,16 @@ public class MyBomb {
 
 	private int x;
 	private int y;
-	private int time = 3000;
+	private long setTime;
+	private int duration = 2000;
+	public long getSetTime() {
+		return setTime;
+	}
+
+	public void setSetTime(long setTime) {
+		this.setTime = setTime;
+	}
+
 	private SpriteSheet image;
 	private Animation animation;
 
@@ -23,6 +32,10 @@ public class MyBomb {
 		}
 	}
 	
+	public int getDuration() {
+		return duration;
+	}
+
 	public MyBomb(String img_path) {
 		loadImage(img_path);
 		animation = new Animation();

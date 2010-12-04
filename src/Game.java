@@ -1,3 +1,4 @@
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.Drawable;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
@@ -27,6 +28,7 @@ public class Game extends BasicGame {
 	private Camera camera;
 	private int posX;
 	private int posY;
+	private int bomb_number = 1;
 	
 	public Game() {
 		super("Slick bomberman");
@@ -61,6 +63,10 @@ public class Game extends BasicGame {
 	}
 	@Override
 	public void update(GameContainer container, int delta) {
+		long time = Sys.getTime();
+		if ((time - bomb.getSetTime()) >= bomb.getDuration()) {
+			set_bomb = false;
+		}
 		 
 		cur_tile = (player.getX() + 16) / 32;
 		cur_tile = map.getTileId(cur_tile, (player.getY() +16) /32, 0);
@@ -99,10 +105,11 @@ public class Game extends BasicGame {
 					player.setY(player.getY()+2);
 				}
 		}
-		if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
+		if (container.getInput().isKeyPressed(Input.KEY_SPACE) && set_bomb == false) {
 			bomb.setX(player.getX());
 			bomb.setY(player.getY());
 			set_bomb = true;
+			bomb.setSetTime(Sys.getTime());
 		}
 		camera.centerOn(player.getX(), player.getY());
 	} 
