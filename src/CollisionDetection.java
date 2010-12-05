@@ -2,6 +2,17 @@
 public class CollisionDetection {
 	
 	// Collision with background
+	/**
+	 * Checks if the tile to which the player want to move is walkable
+	 * 
+	 * @param x - x coordinate 
+	 * @param y - y coordinate 
+	 * @param width - tile width
+	 * @param height - tile height
+	 * @param direction -  move direction
+	 * 
+	 *  @return boolean value - true if tile is walkable , false otherwise
+	 */
 	public static boolean IsTileWalkable(int x, int y, int width, int height, int direction) {
 		int firstPointX = 0;
 		int firstPointY = 0;
@@ -39,10 +50,10 @@ public class CollisionDetection {
 			break;
 		}
 		// get tile number
-		firstPointX = firstPointX / 32;		
-		firstPointY = firstPointY / 32;
-		secPointX =  secPointX / 32;
-		secPointY = secPointY / 32;
+		firstPointX = firstPointX / 64;		
+		firstPointY = firstPointY / 64;
+		secPointX =  secPointX / 64;
+		secPointY = secPointY / 64;
 
 		
 		if (Game.blocked[firstPointX][firstPointY] || Game.blocked[secPointX][secPointY]) {
