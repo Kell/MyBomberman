@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="32" height="18" tilewidth="64" tileheight="64">
+<map version="1.0" orientation="orthogonal" width="16" height="12" tilewidth="64" tileheight="64">
  <tileset firstgid="1" name="tiles" tilewidth="64" tileheight="64">
   <image source="tiles.png"/>
   <tile id="1">
@@ -39,9 +39,9 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Kachelebene 1" width="32" height="18">
+ <layer name="Kachelebene 1" width="16" height="12">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC8VWyw7AIAjDudf/f/E8eCANj8oOHggTSbCFkp0i8m6ya9g5rE3rhu/q3Mg4flv3Deof8y7yXh7Gszys38XGxOC3uLLuLF4RP3oWn3eOeND1vbcy/WTnIcLvvXuVjywfPYM/623EVXZG/VWwrXKnfTT/FS0wc6Pjnv7/YmbnJOp/ts8yzJmWcP9lO7Da98hX9M9w4PHwt/+sRtg9qPFbeNh9uPKtuajofzVu5en6t+z7/3iGfXqmU/wACQAA
+   H4sIAAAAAAAAC51SSQ4AIQiDwVn+/+LhIAlpKi6HBgWbUqSJyHeI29Ec2mEpZiicA5l/9XqOChHzwWe6rA/MB7/SrHpY9W/wBvV3faN/nC+bOatX/me9mHD/zOtoJ/D/Z3uQ78F/5Hx/X8cPwvdtQgADAAA=
   </data>
  </layer>
 </map>
