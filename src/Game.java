@@ -128,7 +128,7 @@ public class Game extends BasicGame {
 		if (bomb.isBomb_set()) {
 			g.drawAnimation(bomb.getAnimation(), bomb.getX(), bomb.getY());
 		} else if (bomb.isExplode()) {
-			bomb.drawExplosion(g, map);
+			// bomb.drawExplosion(g, map);
 		}
 	}
 	
