@@ -4,6 +4,7 @@ import org.newdawn.slick.SpriteSheet;
 public class MyPlayer {
 	private int x;
 	private int y;
+	private countBomb = 0;
 	private SpriteSheet img;
 	
 	public MyPlayer(int x, int y, String img) {
