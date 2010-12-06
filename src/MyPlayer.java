@@ -1,3 +1,5 @@
+
+
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -8,7 +10,7 @@ public class MyPlayer {
 	
 	public MyPlayer(int x, int y, String img) {
 		try {
-			this.img = new SpriteSheet(img, 32, 32);
+			this.img = new SpriteSheet(img, 64, 64);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
