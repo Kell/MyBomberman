@@ -1,7 +1,8 @@
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-
+import org.newdawn.slick.tiled.TiledMap;
 
 public class MyBomb {
 
@@ -22,7 +23,7 @@ public class MyBomb {
 		loadBombAnimation();
 		loadExplosionAnimation();
 	}
-	
+
 	public MyBomb(int x, int y, String img_path) {
 		this.x = x;
 		this.y = y;
@@ -30,7 +31,7 @@ public class MyBomb {
 		loadBombAnimation();
 		loadExplosionAnimation();
 	}
-	
+
 	public long getSetTime() {
 		return setTime;
 	}
@@ -38,7 +39,7 @@ public class MyBomb {
 	public void setSetTime(long setTime) {
 		this.setTime = setTime;
 	}
-	
+
 	public int getDuration() {
 		return duration;
 	}
@@ -47,32 +48,33 @@ public class MyBomb {
 		try {
 			image = new SpriteSheet(img_path, 32, 32);
 		} catch (SlickException e) {
-			System.out.println("Exception: "+e);
+			System.out.println("Exception: " + e);
 		}
 	}
-	
+
 	private void loadBombAnimation() {
 		animation = new Animation();
-		for (int frame=0;frame<3; frame++) {
-			animation.addFrame(image.getSprite(frame,0), 250);
+		for (int frame = 0; frame < 3; frame++) {
+			animation.addFrame(image.getSprite(frame, 0), 250);
 		}
 	}
-	
+
 	private void loadExplosionAnimation() {
 		try {
 			explosion_center = new SpriteSheet("res/exp_center.png", 32, 32);
 		} catch (SlickException e) {
-			System.out.println("Exception: "+e);
+			System.out.println("Exception: " + e);
 		}
 		exp_center = new Animation();
 		for (int yframe = 0; yframe < 2; yframe++) {
-			for (int xframe = 0; xframe< 3; xframe++) {
-				exp_center.addFrame(explosion_center.getSprite(xframe, yframe), 150);
+			for (int xframe = 0; xframe < 3; xframe++) {
+				exp_center.addFrame(explosion_center.getSprite(xframe, yframe),
+						150);
 			}
 		}
 	}
-	
-	public SpriteSheet getImage(){
+
+	public SpriteSheet getImage() {
 		return image;
 	}
 
@@ -91,15 +93,15 @@ public class MyBomb {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 	public Animation getAnimation() {
 		return animation;
 	}
-	
+
 	public Animation getExpAnimation() {
 		return exp_center;
 	}
-	
+
 	public boolean isBomb_set() {
 		return bomb_set;
 	}
@@ -115,5 +117,5 @@ public class MyBomb {
 	public void setExplode(boolean explode) {
 		this.explode = explode;
 	}
-	
+
 }
