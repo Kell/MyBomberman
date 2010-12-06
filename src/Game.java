@@ -88,7 +88,8 @@ public class Game extends BasicGame {
 			}
 		} else if (container.getInput().isKeyDown(Input.KEY_RIGHT)) {
 			player_anim.setCurrentFrame(3);
-			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(),642, 64, 2);
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(),64, 64, 2);
+			System.out.println("walkable: "+walkable);
 			if (walkable) {
 				player.setX((int)((player.getX() + 2)));
 			}
