@@ -10,18 +10,22 @@ public class MyBomb {
 	private int y;
 	private long setTime;
 	private int range = 1;
-	private int duration = 1200;
+	private int duration = 1600;
 	private boolean bomb_set = false;
 	private boolean explode = false;
 	private SpriteSheet image;
 	private Animation animation;
 	private SpriteSheet explosion_center;
+	private SpriteSheet explosion_line;
+	private Animation exp_line;
 	private Animation exp_center;
 
 	public MyBomb(String img_path) {
 		loadImage(img_path);
 		loadBombAnimation();
 		loadExplosionAnimation();
+		loadExplosionLineAnimation("res/exp_line.png");
+
 	}
 
 	public MyBomb(int x, int y, String img_path) {
@@ -30,6 +34,7 @@ public class MyBomb {
 		loadImage(img_path);
 		loadBombAnimation();
 		loadExplosionAnimation();
+		loadExplosionLineAnimation("res/exp_line.png");
 	}
 
 	public long getSetTime() {
@@ -46,9 +51,24 @@ public class MyBomb {
 
 	private void loadImage(String img_path) {
 		try {
-			image = new SpriteSheet(img_path, 32, 32);
+			image = new SpriteSheet(img_path, 64, 64);
 		} catch (SlickException e) {
 			System.out.println("Exception: " + e);
+		}
+	}
+
+	private void loadExplosionLineAnimation(String img_path) {
+		try {
+			explosion_line = new SpriteSheet(img_path, 32, 32);
+		} catch (SlickException e) {
+			System.out.println("Exception: " + e);
+		}
+		exp_line = new Animation();
+		exp_line.setAutoUpdate(false);
+		for (int yframe = 0; yframe < 3; yframe++) {
+			for (int xframe = 0; xframe < 2; xframe++) {
+				exp_line.addFrame(explosion_line.getSprite(xframe, yframe), 150);
+			}
 		}
 	}
 
@@ -116,6 +136,16 @@ public class MyBomb {
 
 	public void setExplode(boolean explode) {
 		this.explode = explode;
+	}
+
+	public void drawExplosion(Graphics g, TiledMap map) {
+		g.drawAnimation(getExpAnimation(), getX(), getY());
+		// right line
+		exp_line.setCurrentFrame(1);
+		g.drawAnimation(exp_line, x + 32, y);
+		// left
+		exp_line.setCurrentFrame(2);
+		g.drawAnimation(exp_line, x - 32, y);
 	}
 
 }
