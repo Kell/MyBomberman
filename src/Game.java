@@ -13,6 +13,8 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import elements.Bomb;
 import elements.Player;
+import elements.powerups.AbstractPowerUp;
+import elements.powerups.SpeedUp;
 
 public class Game extends BasicGame {
 	public static boolean blocked[][];
@@ -66,7 +68,8 @@ public class Game extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta) {
 		long time = Sys.getTime();
-		if (((time - bomb.getSetTime()) >= bomb.getDuration()) && bomb.isBomb_set()) {
+		if (((time - bomb.getSetTime()) >= bomb.getDuration())
+				&& bomb.isBomb_set()) {
 			bomb.setBomb_set(false);
 			bomb.setExplode(true);
 		}
@@ -85,31 +88,48 @@ public class Game extends BasicGame {
 		if (container.getInput().isKeyDown(Input.KEY_LEFT)) {
 			player_anim.setCurrentFrame(2);
 
-			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 4);
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(),
+					player.getY(), 64, 64, 4);
 			if (walkable) {
 				player.setX(player.getX() - 2);
 			}
 		} else if (container.getInput().isKeyDown(Input.KEY_RIGHT)) {
 			player_anim.setCurrentFrame(3);
-			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 2);
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(),
+					player.getY(), 64, 64, 2);
 			if (walkable) {
 				player.setX((int) ((player.getX() + 2)));
 			}
 		} else if (container.getInput().isKeyDown(Input.KEY_UP)) {
 			player_anim.setCurrentFrame(1);
-			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 1);
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(),
+					player.getY(), 64, 64, 1);
 			if (walkable) {
 				player.setY(player.getY() - 2);
 			}
 		} else if (container.getInput().isKeyDown(Input.KEY_DOWN)) {
 			player_anim.setCurrentFrame(0);
-			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 3);
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(),
+					player.getY(), 64, 64, 3);
 			if (walkable) {
 				player.setY(player.getY() + 2);
 			}
 		}
-		if (container.getInput().isKeyPressed(Input.KEY_SPACE) && bomb.isBomb_set() == false) {
-			
+
+		if (container.getInput().isKeyPressed(Input.KEY_H)) {
+			System.out.println(player.getSpeed());
+		}
+
+		if (container.getInput().isKeyPressed(Input.KEY_J)) {
+			player.addPowerUp(new SpeedUp());
+			for (AbstractPowerUp item : player.getPowerUps2()) {
+				item.takeEffectOnPlayer(player);
+			}
+		}
+
+		if (container.getInput().isKeyPressed(Input.KEY_SPACE)
+				&& bomb.isBomb_set() == false) {
+
 			bomb.setX(player.getX());
 			bomb.setY(player.getY());
 			bomb.setBomb_set(true);
@@ -136,7 +156,8 @@ public class Game extends BasicGame {
 	}
 
 	public static void main(String[] argv) throws SlickException {
-		AppGameContainer container = new AppGameContainer(new Game(), 1024, 768, false);
+		AppGameContainer container = new AppGameContainer(new Game(), 1024,
+				768, false);
 		container.start();
 	}
 }

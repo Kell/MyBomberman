@@ -1,4 +1,5 @@
 package elements;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -19,6 +20,7 @@ public class Bomb {
 	private SpriteSheet explosion_line;
 	private Animation exp_line;
 	private Animation exp_center;
+	private int exploderange = 0;
 
 	public Bomb(String img_path) {
 		loadImage(img_path);
@@ -27,7 +29,7 @@ public class Bomb {
 		loadExplosionLineAnimation("res/exp_line.png");
 
 	}
-	
+
 	public Bomb(int x, int y, String img_path) {
 		this.x = x;
 		this.y = y;
@@ -146,6 +148,10 @@ public class Bomb {
 		// left
 		exp_line.setCurrentFrame(2);
 		g.drawAnimation(exp_line, x - 32, y);
+	}
+
+	public void setExplodeRange(int i) {
+		this.exploderange = i;
 	}
 
 }
