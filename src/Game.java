@@ -113,10 +113,28 @@ public class Game extends BasicGame {
 		}
 		if (container.getInput().isKeyPressed(Input.KEY_SPACE)
 				&& bomb.isBomb_set() == false) {
-			bomb.setX(player.getX());
-			bomb.setY(player.getY());
-			bomb.setBomb_set(true);
-			bomb.setSetTime(Sys.getTime());
+			// bomb.setX(player.getX());
+			// bomb.setY(player.getY());
+			// bomb.setBomb_set(true);
+			// bomb.setSetTime(Sys.getTime());
+			if (player.getBombs().size() < player.getBombCount()) {
+				System.out.println("Kann bombem legen");
+			}
+			MyBomb bomb2 = new MyBomb("res/bomb_anim.png");
+			player.addBomb(bomb2);
+			bomb2.setX(player.getX());
+			bomb2.setY(player.getY());
+			bomb2.setBomb_set(true);
+			bomb2.setSetTime(Sys.getTime());
+		}
+
+		if (container.getInput().isKeyPressed(Input.KEY_H)) {
+			player.addBomb();
+			System.out.println(player.getBombCount());
+		}
+		if (container.getInput().isKeyPressed(Input.KEY_J)) {
+			player.subtractBomb();
+			System.out.println(player.getBombCount());
 		}
 		camera.centerOn(player.getX(), player.getY());
 	}
