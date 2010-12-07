@@ -11,14 +11,16 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.tiled.TiledMap;
 
- 
+import elements.Bomb;
+import elements.Player;
+
 public class Game extends BasicGame {
 	public static boolean blocked[][];
 	private TiledMap map;
-	private MyPlayer player;
+	private Player player;
 	private Animation player_anim;
 	private SpriteSheet sheet;
-	private MyBomb bomb = null;
+	private Bomb bomb = null;
 	private int cur_tile;
 	private int l_tile;
 	private int r_tile;
@@ -28,27 +30,27 @@ public class Game extends BasicGame {
 	private int posX;
 	private int posY;
 	private int bomb_number = 1;
-	
+
 	public Game() {
 		super("Slick bomberman");
 	}
-	 
+
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		container.setVSync(true);
-		container.setTargetFrameRate(60); 
-		player = new MyPlayer(64, 64, "res/figure.png");
+		container.setTargetFrameRate(60);
+		player = new Player(64, 64, "res/figure.png");
 		sheet = player.getImg();
-		map = new TiledMap("res/map.tmx");	
-		bomb = new MyBomb("res/bomb_anim.png");
+		map = new TiledMap("res/map.tmx");
+		bomb = new Bomb("res/bomb_anim.png");
 		camera = new Camera(container, map);
-		
+
 		player_anim = new Animation();
 		player_anim.setAutoUpdate(false);
-		for (int frame=0;frame< 4;frame++) {
-			player_anim.addFrame(sheet.getSprite(frame,0), 150);
+		for (int frame = 0; frame < 4; frame++) {
+			player_anim.addFrame(sheet.getSprite(frame, 0), 150);
 		}
-		
+
 		blocked = new boolean[map.getWidth()][map.getHeight()];
 		for (int xAxis = 0; xAxis < map.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < map.getHeight(); yAxis++) {
@@ -60,6 +62,7 @@ public class Game extends BasicGame {
 			}
 		}
 	}
+
 	@Override
 	public void update(GameContainer container, int delta) {
 		long time = Sys.getTime();
@@ -67,9 +70,9 @@ public class Game extends BasicGame {
 			bomb.setBomb_set(false);
 			bomb.setExplode(true);
 		}
-		 
+
 		cur_tile = (player.getX() + 32) / 64;
-		cur_tile = map.getTileId(cur_tile, (player.getY() + 32) /64, 0);
+		cur_tile = map.getTileId(cur_tile, (player.getY() + 32) / 64, 0);
 		l_tile = (player.getX() - 32) / 64;
 		l_tile = map.getTileId(l_tile, (player.getY() + 32) / 64, 0);
 		r_tile = (player.getX() + 64) / 64;
@@ -78,60 +81,60 @@ public class Game extends BasicGame {
 		u_tile = map.getTileId(player.getX() / 64, u_tile, 0);
 		lo_tile = (player.getY() + 66) / 64;
 		lo_tile = map.getTileId(player.getX() / 64, lo_tile, 0);
-		
+
 		if (container.getInput().isKeyDown(Input.KEY_LEFT)) {
 			player_anim.setCurrentFrame(2);
-				
-			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 4);			
+
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 4);
 			if (walkable) {
-				player.setX(player.getX()-2);
+				player.setX(player.getX() - 2);
 			}
 		} else if (container.getInput().isKeyDown(Input.KEY_RIGHT)) {
 			player_anim.setCurrentFrame(3);
-			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(),64, 64, 2);
-			System.out.println("walkable: "+walkable);
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 2);
 			if (walkable) {
-				player.setX((int)((player.getX() + 2)));
+				player.setX((int) ((player.getX() + 2)));
 			}
 		} else if (container.getInput().isKeyDown(Input.KEY_UP)) {
 			player_anim.setCurrentFrame(1);
 			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 1);
 			if (walkable) {
-				player.setY(player.getY()-2);
+				player.setY(player.getY() - 2);
 			}
 		} else if (container.getInput().isKeyDown(Input.KEY_DOWN)) {
-				player_anim.setCurrentFrame(0);
-				boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 3);
-				if (walkable) {
-					player.setY(player.getY()+2);
-				}
+			player_anim.setCurrentFrame(0);
+			boolean walkable = CollisionDetection.IsTileWalkable(player.getX(), player.getY(), 64, 64, 3);
+			if (walkable) {
+				player.setY(player.getY() + 2);
+			}
 		}
 		if (container.getInput().isKeyPressed(Input.KEY_SPACE) && bomb.isBomb_set() == false) {
+			
 			bomb.setX(player.getX());
 			bomb.setY(player.getY());
 			bomb.setBomb_set(true);
 			bomb.setSetTime(Sys.getTime());
 		}
 		camera.centerOn(player.getX(), player.getY());
-	} 
+	}
+
 	@Override
-	public void render(GameContainer container, Graphics g)  {
+	public void render(GameContainer container, Graphics g) {
 		map.render(0, 0);
-		g.drawString("cur TILE: "+cur_tile, 100, 10);
-		g.drawString("left TILE: "+l_tile, 250, 10);
-		g.drawString("right TILE: "+r_tile, 400, 10);
-		g.drawString("upper TILE: "+u_tile, 550, 10);
-		g.drawString("lower TILE: "+lo_tile, 700, 10);
+		g.drawString("cur TILE: " + cur_tile, 100, 10);
+		g.drawString("left TILE: " + l_tile, 250, 10);
+		g.drawString("right TILE: " + r_tile, 400, 10);
+		g.drawString("upper TILE: " + u_tile, 550, 10);
+		g.drawString("lower TILE: " + lo_tile, 700, 10);
 		g.drawAnimation(player_anim, player.getX(), player.getY());
-		
-		
+
 		if (bomb.isBomb_set()) {
 			g.drawAnimation(bomb.getAnimation(), bomb.getX(), bomb.getY());
 		} else if (bomb.isExplode()) {
 			bomb.drawExplosion(g, map);
 		}
 	}
-	
+
 	public static void main(String[] argv) throws SlickException {
 		AppGameContainer container = new AppGameContainer(new Game(), 1024, 768, false);
 		container.start();
