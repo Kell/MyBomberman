@@ -1,27 +1,28 @@
-import java.util.ArrayList;
+package elements;
+import java.util.HashMap;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
-public class MyPlayer {
+public class Player {
 	private int x;
 	private int y;
 	private SpriteSheet img;
-	private int countBomb = 1;
-	private ArrayList<MyBomb> bombs = null;
-
-	public MyPlayer(int x, int y, String img) {
+	private HashMap<String, Integer> powerUps;
+	
+	public Player(int x, int y, String img) {
 		try {
 			this.img = new SpriteSheet(img, 64, 64);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-
+		
 		this.x = x;
 		this.y = y;
-		this.bombs = new ArrayList<MyBomb>();
+		
+		InitializePowerUps();
 	}
-
+	
 	public int getX() {
 		return x;
 	}
@@ -45,24 +46,14 @@ public class MyPlayer {
 	public void setImg(SpriteSheet img) {
 		this.img = img;
 	}
-
-	public void addBomb() {
-		this.countBomb++;
+	
+	private void InitializePowerUps() {
+		powerUps.put("bombs", 1);
+		powerUps.put("speed", 1);
+		powerUps.put("range", 1);
 	}
-
-	public void subtractBomb() {
-		this.countBomb--;
-	}
-
-	public ArrayList<MyBomb> getBombs() {
-		return this.bombs;
-	}
-
-	public int getBombCount() {
-		return this.countBomb;
-	}
-
-	public void addBomb(MyBomb bomb) {
-		this.bombs.add(bomb);
+	
+	public HashMap<String, Integer> getPowerUps() {
+		return powerUps;
 	}
 }

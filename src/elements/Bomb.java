@@ -1,15 +1,15 @@
+package elements;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.tiled.TiledMap;
 
-public class MyBomb {
+public class Bomb {
 
 	private int x;
 	private int y;
 	private long setTime;
-	private int range = 1;
 	private int duration = 1600;
 	private boolean bomb_set = false;
 	private boolean explode = false;
@@ -20,15 +20,15 @@ public class MyBomb {
 	private Animation exp_line;
 	private Animation exp_center;
 
-	public MyBomb(String img_path) {
+	public Bomb(String img_path) {
 		loadImage(img_path);
 		loadBombAnimation();
 		loadExplosionAnimation();
 		loadExplosionLineAnimation("res/exp_line.png");
 
 	}
-
-	public MyBomb(int x, int y, String img_path) {
+	
+	public Bomb(int x, int y, String img_path) {
 		this.x = x;
 		this.y = y;
 		loadImage(img_path);
