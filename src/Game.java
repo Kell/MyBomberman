@@ -14,6 +14,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import elements.Bomb;
 import elements.Player;
 import elements.powerups.AbstractPowerUp;
+import elements.powerups.PowerUp;
 import elements.powerups.SpeedUp;
 
 public class Game extends BasicGame {
@@ -121,7 +122,7 @@ public class Game extends BasicGame {
 		}
 
 		if (container.getInput().isKeyPressed(Input.KEY_J)) {
-			player.addPowerUp(new SpeedUp());
+			player.addPowerUp(new PowerUp());
 			for (AbstractPowerUp item : player.getPowerUps2()) {
 				item.takeEffectOnPlayer(player);
 			}

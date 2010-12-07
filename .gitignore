@@ -1,0 +1,7 @@
+# Git Ignore 
+#
+ 
+bin/
+lib/
+.classpath
+.settings

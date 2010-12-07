@@ -14,6 +14,7 @@ public class Player {
 	private SpriteSheet img;
 	private HashMap<String, Integer> powerUps;
 	private ArrayList<AbstractPowerUp> powerups = null;
+	private int bombCount = 1;
 	private int speed;
 
 	public Player(int x, int y, String img) {
@@ -82,5 +83,13 @@ public class Player {
 
 	public int getSpeed() {
 		return this.speed;
+	}
+
+	public void addBombCount() {
+		this.bombCount++;
+	}
+
+	public void subtractBombCount() {
+		this.bombCount--;
 	}
 }
