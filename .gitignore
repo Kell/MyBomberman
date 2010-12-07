@@ -1,9 +1,0 @@
-# Git Ignore 
-#
- 
-bin/
-lib/
-natives/
-.project
-.classpath
-.settings
