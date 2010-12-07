@@ -3,5 +3,7 @@
  
 bin/
 lib/
+natives/
+.project
 .classpath
 .settings
