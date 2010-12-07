@@ -24,16 +24,17 @@ public class Bomb {
 
 	public Bomb(String img_path) {
 		loadImage(img_path);
-		loadBombAnimation();
-		loadExplosionAnimation();
-		loadExplosionLineAnimation("res/exp_line.png");
-
+		load();
 	}
 
 	public Bomb(int x, int y, String img_path) {
 		this.x = x;
 		this.y = y;
 		loadImage(img_path);
+		load();
+	}
+
+	private void load() {
 		loadBombAnimation();
 		loadExplosionAnimation();
 		loadExplosionLineAnimation("res/exp_line.png");

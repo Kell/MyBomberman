@@ -1,7 +1,6 @@
 package elements;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -12,8 +11,7 @@ public class Player {
 	private int x;
 	private int y;
 	private SpriteSheet img;
-	private HashMap<String, Integer> powerUps;
-	private ArrayList<AbstractPowerUp> powerups = null;
+	private ArrayList<AbstractPowerUp> powerUps = null;
 	private int bombCount = 1;
 	private int speed;
 
@@ -26,9 +24,7 @@ public class Player {
 
 		this.x = x;
 		this.y = y;
-		powerUps = new HashMap<String, Integer>();
-		powerups = new ArrayList<AbstractPowerUp>();
-		InitializePowerUps();
+		powerUps = new ArrayList<AbstractPowerUp>();
 	}
 
 	public int getX() {
@@ -55,26 +51,16 @@ public class Player {
 		this.img = img;
 	}
 
-	private void InitializePowerUps() {
-		powerUps.put("bombs", 1);
-		powerUps.put("speed", 1);
-		powerUps.put("range", 1);
-	}
-
-	public HashMap<String, Integer> getPowerUps() {
-		return powerUps;
-	}
-
 	public void addPowerUp(AbstractPowerUp powerup) {
-		this.powerups.add(powerup);
+		this.powerUps.add(powerup);
 	}
 
 	public void removePowerUps() {
-		this.powerups = new ArrayList<AbstractPowerUp>();
+		this.powerUps = new ArrayList<AbstractPowerUp>();
 	}
 
-	public ArrayList<AbstractPowerUp> getPowerUps2() {
-		return this.powerups;
+	public ArrayList<AbstractPowerUp> getPowerUps() {
+		return this.powerUps;
 	}
 
 	public void setSpeed(int i) {

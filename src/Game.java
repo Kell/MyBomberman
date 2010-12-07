@@ -1,11 +1,11 @@
+import java.util.ArrayList;
+
 import org.lwjgl.Sys;
-import org.lwjgl.opengl.Drawable;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -15,7 +15,6 @@ import elements.Bomb;
 import elements.Player;
 import elements.powerups.AbstractPowerUp;
 import elements.powerups.PowerUp;
-import elements.powerups.SpeedUp;
 
 public class Game extends BasicGame {
 	public static boolean blocked[][];
@@ -24,15 +23,14 @@ public class Game extends BasicGame {
 	private Animation player_anim;
 	private SpriteSheet sheet;
 	private Bomb bomb = null;
+	private Camera camera;
 	private int cur_tile;
 	private int l_tile;
 	private int r_tile;
 	private int u_tile;
 	private int lo_tile;
-	private Camera camera;
-	private int posX;
-	private int posY;
-	private int bomb_number = 1;
+
+	// private ArrayList<GameEntity> entities = null;
 
 	public Game() {
 		super("Slick bomberman");
@@ -53,6 +51,8 @@ public class Game extends BasicGame {
 		for (int frame = 0; frame < 4; frame++) {
 			player_anim.addFrame(sheet.getSprite(frame, 0), 150);
 		}
+
+		// entities = new ArrayList<GameEntity>();
 
 		blocked = new boolean[map.getWidth()][map.getHeight()];
 		for (int xAxis = 0; xAxis < map.getWidth(); xAxis++) {
@@ -117,13 +117,19 @@ public class Game extends BasicGame {
 			}
 		}
 
+		/**
+		 * bergonline testing
+		 */
 		if (container.getInput().isKeyPressed(Input.KEY_H)) {
 			System.out.println(player.getSpeed());
 		}
 
+		/**
+		 * bergonline testing
+		 */
 		if (container.getInput().isKeyPressed(Input.KEY_J)) {
 			player.addPowerUp(new PowerUp());
-			for (AbstractPowerUp item : player.getPowerUps2()) {
+			for (AbstractPowerUp item : player.getPowerUps()) {
 				item.takeEffectOnPlayer(player);
 			}
 		}
@@ -141,6 +147,11 @@ public class Game extends BasicGame {
 
 	@Override
 	public void render(GameContainer container, Graphics g) {
+
+		/*
+		 * for (GameEntity entity : entities) { entity.draw(); }
+		 */
+
 		map.render(0, 0);
 		g.drawString("cur TILE: " + cur_tile, 100, 10);
 		g.drawString("left TILE: " + l_tile, 250, 10);
