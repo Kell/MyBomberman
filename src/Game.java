@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 import org.lwjgl.Sys;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
@@ -53,6 +51,7 @@ public class Game extends BasicGame {
 		}
 
 		// entities = new ArrayList<GameEntity>();
+		player.addPowerUp(new PowerUp());
 
 		blocked = new boolean[map.getWidth()][map.getHeight()];
 		for (int xAxis = 0; xAxis < map.getWidth(); xAxis++) {
@@ -128,15 +127,16 @@ public class Game extends BasicGame {
 		 * bergonline testing
 		 */
 		if (container.getInput().isKeyPressed(Input.KEY_J)) {
-			player.addPowerUp(new PowerUp());
 			for (AbstractPowerUp item : player.getPowerUps()) {
 				item.takeEffectOnPlayer(player);
+			}
+			for (AbstractPowerUp item : player.getPowerUps()) {
+				item.takeEffectOnBomb(bomb);
 			}
 		}
 
 		if (container.getInput().isKeyPressed(Input.KEY_SPACE)
 				&& bomb.isBomb_set() == false) {
-
 			bomb.setX(player.getX());
 			bomb.setY(player.getY());
 			bomb.setBomb_set(true);

@@ -20,7 +20,7 @@ public class Bomb {
 	private SpriteSheet explosion_line;
 	private Animation exp_line;
 	private Animation exp_center;
-	private int exploderange = 3;
+	private int exploderange = 1;
 
 	public Bomb(String img_path) {
 		loadImage(img_path);
@@ -143,16 +143,33 @@ public class Bomb {
 
 	public void drawExplosion(Graphics g, TiledMap map) {
 		g.drawAnimation(getExpAnimation(), getX(), getY());
-		// right line
-		exp_line.setCurrentFrame(1);
-		g.drawAnimation(exp_line, x + (64 * exploderange), y);
-		// left
-		exp_line.setCurrentFrame(2);
-		g.drawAnimation(exp_line, x - (64 * exploderange), y);
+
+		for (int a = 1; a <= exploderange; a++) {
+			// right
+			exp_line.setCurrentFrame(1);
+			g.drawAnimation(exp_line, x + (64 * a), y);
+
+			// left
+			exp_line.setCurrentFrame(2);
+			g.drawAnimation(exp_line, x - (64 * a), y);
+
+			// up
+			exp_line.setCurrentFrame(1);
+			g.drawAnimation(exp_line, x, y - (64 * a));
+
+			// down
+			exp_line.setCurrentFrame(1);
+			g.drawAnimation(exp_line, x, y + (64 * a));
+		}
+
 	}
 
 	public void setExplodeRange(int i) {
 		this.exploderange = i;
+	}
+
+	public int getExplodeRange() {
+		return exploderange;
 	}
 
 }

@@ -11,7 +11,7 @@ public class PowerUp extends AbstractPowerUp {
 
 	@Override
 	public void takeEffectOnBomb(Bomb b) {
-		b.setExplodeRange(3);
+		b.setExplodeRange(b.getExplodeRange() + 1);
 	}
 
 }
