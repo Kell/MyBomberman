@@ -1,25 +1,24 @@
+import java.util.Vector;
+
 import org.lwjgl.Sys;
-import org.lwjgl.opengl.Drawable;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.tiled.TiledMap;
 
 import elements.Bomb;
 import elements.Player;
 
 public class Game extends BasicGame {
-	public static boolean blocked[][];
 	private TiledMap map;
+	public static boolean blocked[][];
+	public static Vector layer1[][];
 	private Player player;
 	private Animation player_anim;
-	private SpriteSheet sheet;
 	private Bomb bomb = null;
 	private int cur_tile;
 	private int l_tile;
@@ -27,9 +26,6 @@ public class Game extends BasicGame {
 	private int u_tile;
 	private int lo_tile;
 	private Camera camera;
-	private int posX;
-	private int posY;
-	private int bomb_number = 1;
 
 	public Game() {
 		super("Slick bomberman");
@@ -40,7 +36,6 @@ public class Game extends BasicGame {
 		container.setVSync(true);
 		container.setTargetFrameRate(60);
 		player = new Player(64, 64, "res/figure.png");
-		sheet = player.getImg();
 		map = new TiledMap("res/map.tmx");
 		bomb = new Bomb("res/bomb_anim.png");
 		camera = new Camera(container, map);
@@ -48,7 +43,7 @@ public class Game extends BasicGame {
 		player_anim = new Animation();
 		player_anim.setAutoUpdate(false);
 		for (int frame = 0; frame < 4; frame++) {
-			player_anim.addFrame(sheet.getSprite(frame, 0), 150);
+			player_anim.addFrame(player.getImg().getSprite(frame, 0), 150);
 		}
 
 		blocked = new boolean[map.getWidth()][map.getHeight()];
