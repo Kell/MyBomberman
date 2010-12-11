@@ -16,7 +16,6 @@ public class Game extends BasicGame {
 	private TiledMap map;
 
 	public static boolean blocked[][];
-	private Player player;
 	private Camera camera;
 	private int cur_tile;
 	private int l_tile;
@@ -35,7 +34,7 @@ public class Game extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		container.setVSync(true);
-		// container.setTargetFrameRate(60);
+		container.setTargetFrameRate(60);
 		map = new TiledMap("res/map.tmx");
 
 		players = new ArrayList<Player>();
@@ -43,7 +42,7 @@ public class Game extends BasicGame {
 		player = new Player("res/figure.png", 64, 64);
 		players.add(player);
 
-		player2 = new Player("res/figure.png", 64, 64);
+		player2 = new Player("res/figure2.png", 14*64, 64);
 		players.add(player2);
 
 		playerControls = new GameControls(player, Input.KEY_LEFT,
