@@ -10,10 +10,9 @@ import org.newdawn.slick.tiled.TiledMap;
 public class Bomb extends Sprite {
 
 	private long setTime;
-	private int duration = 1600;
+	private long duration = 1500;
+	private long maxTime = 2500;
 	private int exploderange = 1;
-	private boolean bomb_set = true;
-	private boolean explode = false;
 	private Player player = null;
 
 	/**
@@ -35,6 +34,19 @@ public class Bomb extends Sprite {
 
 		this.player = player;
 		this.exploderange = player.getExplodeRange();
+
+		super.addAnimation("Animation", getAni());
+		super.addAnimation("Explosion", getExplosionAni());
+		super.addAnimation("ExplosionLine", getExploLine("res/exp_line.png"));
+	}
+
+	public Bomb(Player player) {
+		super("res/bomb_anim.png", player.getX(), player.getY());
+		super.setImage();
+
+		this.player = player;
+		this.exploderange = player.getExplodeRange();
+		this.setTime = System.currentTimeMillis();
 
 		super.addAnimation("Animation", getAni());
 		super.addAnimation("Explosion", getExplosionAni());
@@ -99,32 +111,12 @@ public class Bomb extends Sprite {
 		return exp_center;
 	}
 
-	public long getSetTime() {
-		return setTime;
+	public void setDuration(long duration) {
+		this.duration = duration;
 	}
 
-	public void setSetTime(long setTime) {
-		this.setTime = setTime;
-	}
-
-	public int getDuration() {
+	public long getDuration() {
 		return duration;
-	}
-
-	public boolean isBomb_set() {
-		return bomb_set;
-	}
-
-	public void setBomb_set(boolean bomb_set) {
-		this.bomb_set = bomb_set;
-	}
-
-	public boolean isExplode() {
-		return explode;
-	}
-
-	public void setExplode(boolean explode) {
-		this.explode = explode;
 	}
 
 	public void drawExplosion(Graphics g, TiledMap map) {
@@ -160,6 +152,14 @@ public class Bomb extends Sprite {
 
 	@Override
 	public void render(GameContainer container, Graphics g) {
-		super.render(container, g);
+		long time = System.currentTimeMillis();
+
+		if (time < (setTime + duration)) {
+			g.drawAnimation(getAnimation("Animation"), getX(), getY());
+		} else if (time < (setTime + maxTime)) {
+			g.drawAnimation(getAnimation("Explosion"), getX(), getY());
+		} else {
+			player.removeBomb(this);
+		}
 	}
 }

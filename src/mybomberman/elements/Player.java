@@ -71,6 +71,10 @@ public class Player extends Sprite {
 		}
 	}
 
+	public void addBomb() {
+		addBomb(new Bomb(this));
+	}
+
 	public void removeBomb(Bomb bomb) {
 		this.bombs.remove(bomb);
 	}
@@ -117,23 +121,23 @@ public class Player extends Sprite {
 		boolean walkable;
 		if (left) {
 			anim.setCurrentFrame(2);
-			walkable = CollisionDetection.IsTileWalkable(getX(),
-					getY(), 64, 64, 4);
+			walkable = CollisionDetection.IsTileWalkable(getX(), getY(), 64,
+					64, 4);
 			if (walkable) {
 				setX(getX() - speed);
 			}
 		} else if (up) {
 			anim.setCurrentFrame(1);
-			walkable = CollisionDetection.IsTileWalkable(getX(),
-					getY(), 64, 64, 1);
+			walkable = CollisionDetection.IsTileWalkable(getX(), getY(), 64,
+					64, 1);
 			if (walkable) {
 				setY(getY() - speed);
 			}
 		} else if (right) {
 
 			anim.setCurrentFrame(3);
-			walkable = CollisionDetection.IsTileWalkable(getX(),
-					getY(), 64, 64, 2);
+			walkable = CollisionDetection.IsTileWalkable(getX(), getY(), 64,
+					64, 2);
 
 			if (walkable) {
 				setX((int) ((getX() + speed)));
@@ -141,8 +145,8 @@ public class Player extends Sprite {
 		} else if (down) {
 
 			anim.setCurrentFrame(0);
-			walkable = CollisionDetection.IsTileWalkable(getX(),
-					getY(), 64, 64, 3);
+			walkable = CollisionDetection.IsTileWalkable(getX(), getY(), 64,
+					64, 3);
 			if (walkable) {
 				setY(getY() + speed);
 			}

@@ -32,7 +32,7 @@ public class GameControls {
 		} else if (input.isKeyDown(getDown())) {
 			player.setMovementDOWN();
 		} else if (input.isKeyPressed(getAction())) {
-			player.addBomb(new Bomb(player.getX(), player.getY(), player));
+			player.addBomb();
 		} else if (input.isKeyPressed(getAction2())) {
 			player.setBombCount(player.getBombCount() + 1);
 			System.out.println(player.getBombCount());
