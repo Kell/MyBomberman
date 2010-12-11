@@ -8,8 +8,8 @@ public abstract class AbstractPowerUp {
 	public AbstractPowerUp() {
 	}
 
-	public abstract void takeEffectOnPlayer(Player p);
+	public abstract void takeEffect(Player p);
 
-	public abstract void takeEffectOnBomb(Bomb b);
+	public abstract void takeEffect(Bomb b);
 
 }

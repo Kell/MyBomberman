@@ -6,12 +6,12 @@ import elements.Player;
 public class SpeedUp extends AbstractPowerUp {
 
 	@Override
-	public void takeEffectOnPlayer(Player p) {
+	public void takeEffect(Player p) {
 		p.setSpeed(3);
 	}
 
 	@Override
-	public void takeEffectOnBomb(Bomb b) {
+	public void takeEffect(Bomb b) {
 	}
 
 }

@@ -12,6 +12,7 @@ public class Player {
 	private int y;
 	private SpriteSheet img;
 	private ArrayList<AbstractPowerUp> powerUps = null;
+	private ArrayList<Bomb> bombs = null;
 	private int bombCount = 1;
 	private int speed;
 
@@ -25,6 +26,7 @@ public class Player {
 		this.x = x;
 		this.y = y;
 		powerUps = new ArrayList<AbstractPowerUp>();
+		bombs = new ArrayList<Bomb>();
 	}
 
 	public int getX() {
@@ -77,5 +79,21 @@ public class Player {
 
 	public void subtractBombCount() {
 		this.bombCount--;
+	}
+
+	public void addBomb(Bomb bomb) {
+		this.bombs.add(bomb);
+	}
+
+	public void removeBomb(Bomb bomb) {
+		this.bombs.remove(bomb);
+	}
+
+	public int getMaxBombs() {
+		return this.bombCount;
+	}
+
+	public ArrayList<Bomb> getBombs() {
+		return this.bombs;
 	}
 }

@@ -21,6 +21,7 @@ public class Bomb {
 	private Animation exp_line;
 	private Animation exp_center;
 	private int exploderange = 1;
+	private Player player = null;
 
 	public Bomb(String img_path) {
 		loadImage(img_path);
@@ -32,6 +33,13 @@ public class Bomb {
 		this.y = y;
 		loadImage(img_path);
 		load();
+	}
+
+	public Bomb(String string, Player player) {
+		loadImage(string);
+		load();
+		player.addBomb(this);
+		this.player = player;
 	}
 
 	private void load() {

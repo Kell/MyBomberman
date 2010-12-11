@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import org.lwjgl.Sys;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
@@ -9,9 +11,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.tiled.TiledMap;
 
+import sun.security.krb5.internal.crypto.dk.ArcFourCrypto;
+
 import elements.Bomb;
 import elements.Player;
 import elements.powerups.AbstractPowerUp;
+import elements.powerups.BombUp;
 import elements.powerups.PowerUp;
 
 public class Game extends BasicGame {
@@ -27,6 +32,7 @@ public class Game extends BasicGame {
 	private int r_tile;
 	private int u_tile;
 	private int lo_tile;
+	private ArrayList<Bomb> bombs = null;
 
 	// private ArrayList<GameEntity> entities = null;
 
@@ -51,7 +57,8 @@ public class Game extends BasicGame {
 		}
 
 		// entities = new ArrayList<GameEntity>();
-		player.addPowerUp(new PowerUp());
+		player.addPowerUp(new BombUp());
+		bombs = new ArrayList<Bomb>();
 
 		blocked = new boolean[map.getWidth()][map.getHeight()];
 		for (int xAxis = 0; xAxis < map.getWidth(); xAxis++) {
@@ -120,7 +127,7 @@ public class Game extends BasicGame {
 		 * bergonline testing
 		 */
 		if (container.getInput().isKeyPressed(Input.KEY_H)) {
-			System.out.println(player.getSpeed());
+			System.out.println(player.getMaxBombs());
 		}
 
 		/**
@@ -128,10 +135,21 @@ public class Game extends BasicGame {
 		 */
 		if (container.getInput().isKeyPressed(Input.KEY_J)) {
 			for (AbstractPowerUp item : player.getPowerUps()) {
-				item.takeEffectOnPlayer(player);
+				item.takeEffect(player);
 			}
 			for (AbstractPowerUp item : player.getPowerUps()) {
-				item.takeEffectOnBomb(bomb);
+				item.takeEffect(bomb);
+			}
+		}
+
+		if (container.getInput().isKeyPressed(Input.KEY_R)) {
+			if (player.getBombs().size() <= player.getMaxBombs()) {
+				bomb = new Bomb("res/bomb_anim.png", player);
+				bomb.setX(player.getX());
+				bomb.setY(player.getY());
+				bomb.setBomb_set(true);
+				bomb.setSetTime(Sys.getTime());
+				bombs.add(bomb);
 			}
 		}
 
@@ -142,6 +160,7 @@ public class Game extends BasicGame {
 			bomb.setBomb_set(true);
 			bomb.setSetTime(Sys.getTime());
 		}
+
 		camera.centerOn(player.getX(), player.getY());
 	}
 
@@ -160,11 +179,14 @@ public class Game extends BasicGame {
 		g.drawString("lower TILE: " + lo_tile, 700, 10);
 		g.drawAnimation(player_anim, player.getX(), player.getY());
 
-		if (bomb.isBomb_set()) {
-			g.drawAnimation(bomb.getAnimation(), bomb.getX(), bomb.getY());
-		} else if (bomb.isExplode()) {
-			bomb.drawExplosion(g, map);
+		for (Bomb bomb : bombs) {
+			if (bomb.isBomb_set()) {
+				g.drawAnimation(bomb.getAnimation(), bomb.getX(), bomb.getY());
+			} else if (bomb.isExplode()) {
+				bomb.drawExplosion(g, map);
+			}
 		}
+
 	}
 
 	public static void main(String[] argv) throws SlickException {

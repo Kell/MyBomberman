@@ -6,11 +6,11 @@ import elements.Player;
 public class PowerUp extends AbstractPowerUp {
 
 	@Override
-	public void takeEffectOnPlayer(Player p) {
+	public void takeEffect(Player p) {
 	}
 
 	@Override
-	public void takeEffectOnBomb(Bomb b) {
+	public void takeEffect(Bomb b) {
 		b.setExplodeRange(b.getExplodeRange() + 1);
 	}
 
