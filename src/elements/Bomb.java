@@ -1,4 +1,7 @@
 package elements;
+
+import main.Map;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -140,6 +143,11 @@ public class Bomb {
 	
 	public void drawExplosion(Graphics g, TiledMap map) {
 		g.drawAnimation(getExpAnimation(), getX(), getY());
+		Map map1 = new Map();
+		int xTile = map1.getTileNumber(getX())+1;
+		int yTile = map1.getTileNumber(getY());
+		System.out.println("right: "+xTile+"|"+yTile);
+		map.setTileId(xTile, yTile, 0, 2);
 		// right line
 		exp_line.setCurrentFrame(1);
 		g.drawAnimation(exp_line, x+32, y);
