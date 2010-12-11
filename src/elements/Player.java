@@ -48,6 +48,8 @@ public class Player {
 	}
 	
 	private void InitializePowerUps() {
+		powerUps = new HashMap<String, Integer>();
+		
 		powerUps.put("bombs", 1);
 		powerUps.put("speed", 1);
 		powerUps.put("range", 1);
