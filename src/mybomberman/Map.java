@@ -1,3 +1,4 @@
+package mybomberman;
 
 public class Map {
 	
