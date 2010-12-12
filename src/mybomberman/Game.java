@@ -13,7 +13,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class Game extends BasicGame {
-	private TiledMap map;
+	public static TiledMap map;
 
 	public static boolean blocked[][];
 	private Camera camera;
