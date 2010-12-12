@@ -1,6 +1,6 @@
 package mybomberman.elements;
 
-import mybomberman.Game;
+import mybomberman.GamePlayState;
 import mybomberman.MapHelper;
 
 import org.newdawn.slick.Animation;
@@ -130,49 +130,43 @@ public class Bomb extends Sprite {
 		Animation explosion_anim = getAnimation("ExplosionLine");
 		for (int a = 1; a <= exploderange; a++) {
 			// right
-			boolean blocked = MapHelper.isTileBlocked(getX() + (66 * a), getY());
+			boolean blocked = MapHelper
+					.isTileBlocked(getX() + (66 * a), getY());
 			int blaX = getX() + (66 * a);
 			int blaY = getY();
-			System.out.println("\nblocked right:"+blocked+" x:"+blaX+"|y:"+blaY);
+			System.out.println("\nblocked right:" + blocked + " x:" + blaX
+					+ "|y:" + blaY);
 			if (blocked) {
 				MapHelper.changeBackgroundTile(getX() + (66 * a), getY(), 2, 1);
 				explosion_anim.setCurrentFrame(1);
-				System.out.println("breakable true :"+a);
+				System.out.println("breakable true :" + a);
 			} else {
-				System.out.println("breakable false :"+a);
+				System.out.println("breakable false :" + a);
 				g.drawAnimation(explosion_anim, getX() + (64 * a), getY());
 			}
 			/*
-			// left
-			blocked = MapHelper.isTileBlocked(getX() - (64 * a), getY());
-			System.out.println("blocked left:"+blocked+" x:"+blaX+"|y:"+blaY);
-			if (blocked) {
-				MapHelper.changeBackgroundTile(getX() - (64 * a), getY(), 4, 1);
-				explosion_anim.setCurrentFrame(2);
-			} else {
-				g.drawAnimation(explosion_anim, getX() - (64 * a), getY());
-			}
-			
-			// up
-			blocked = MapHelper.isTileBlocked(getX(), getY() - (66 * a));
-			System.out.println("blocked up:"+blocked+" x:"+blaX+"|y:"+blaY);
-			if (blocked) {
-				MapHelper.changeBackgroundTile(getX(), getY() - (66 * a), 1, 1);
-				explosion_anim.setCurrentFrame(1);
-			} else {
-				g.drawAnimation(explosion_anim, getX(), getY() - (64 * a));
-			}
-			
-			// down
-			blocked = MapHelper.isTileBlocked(getX(), getY() + (66 * a));
-			System.out.println("blocked down:"+blocked+" x:"+blaX+"|y:"+blaY);
-			if (blocked) {
-				MapHelper.changeBackgroundTile(getX(), getY() + (66 * a), 3, 1);
-				explosion_anim.setCurrentFrame(1);
-			} else {
-				g.drawAnimation(explosion_anim, getX(), getY() + (64 * a));
-			}
-			*/
+			 * // left blocked = MapHelper.isTileBlocked(getX() - (64 * a),
+			 * getY());
+			 * System.out.println("blocked left:"+blocked+" x:"+blaX+"|y:"
+			 * +blaY); if (blocked) { MapHelper.changeBackgroundTile(getX() -
+			 * (64 * a), getY(), 4, 1); explosion_anim.setCurrentFrame(2); }
+			 * else { g.drawAnimation(explosion_anim, getX() - (64 * a),
+			 * getY()); }
+			 * 
+			 * // up blocked = MapHelper.isTileBlocked(getX(), getY() - (66 *
+			 * a));
+			 * System.out.println("blocked up:"+blocked+" x:"+blaX+"|y:"+blaY);
+			 * if (blocked) { MapHelper.changeBackgroundTile(getX(), getY() -
+			 * (66 * a), 1, 1); explosion_anim.setCurrentFrame(1); } else {
+			 * g.drawAnimation(explosion_anim, getX(), getY() - (64 * a)); }
+			 * 
+			 * // down blocked = MapHelper.isTileBlocked(getX(), getY() + (66 *
+			 * a));
+			 * System.out.println("blocked down:"+blocked+" x:"+blaX+"|y:"+blaY
+			 * ); if (blocked) { MapHelper.changeBackgroundTile(getX(), getY() +
+			 * (66 * a), 3, 1); explosion_anim.setCurrentFrame(1); } else {
+			 * g.drawAnimation(explosion_anim, getX(), getY() + (64 * a)); }
+			 */
 		}
 	}
 
@@ -192,7 +186,7 @@ public class Bomb extends Sprite {
 			g.drawAnimation(getAnimation("Animation"), getX(), getY());
 		} else if (time < (setTime + maxTime)) {
 			g.drawAnimation(getAnimation("Explosion"), getX(), getY());
-			drawExplosion(g, Game.map);
+			drawExplosion(g, GamePlayState.map);
 		} else {
 			player.removeBomb(this);
 		}
