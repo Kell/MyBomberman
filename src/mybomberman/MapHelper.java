@@ -38,7 +38,7 @@ public class MapHelper {
 		int yTile = getTileNumber(y);
 		
 		int tileID = Game.map.getTileId(xTile, yTile, 0);
-		System.out.println("TileID: "+tileID);
+		//System.out.println("TileID["+xTile+"]["+yTile+"]: "+tileID);
 		String value = Game.map.getTileProperty(tileID, "breakable", "false");
 		if (value.equals("1")) {
 			return true;
@@ -56,15 +56,17 @@ public class MapHelper {
 	 *  3 - lower tile
 	 *  4 - left tile 
 	 */
-	public static void changeBackgroundTile(int x, int y, int dir, int tileID) {
+	public static boolean changeBackgroundTile(int x, int y, int dir, int tileID) {
 		boolean breakable = isTileBreakable(x, y);
 		int xTile = getTileNumber(x);
 		int yTile = getTileNumber(y);
 			
 		if (breakable) {
-			System.out.println("x:"+xTile+"|y:"+yTile+" direction:"+dir);
+			//System.out.println("x:"+xTile+"|y:"+yTile+" direction:"+dir);
 			Game.map.setTileId(xTile, yTile, 0, tileID);
-			//Game.blocked[xTile][yTile] = false;;
+			
+			return true;
 		}
+		return false;
 	}
 }

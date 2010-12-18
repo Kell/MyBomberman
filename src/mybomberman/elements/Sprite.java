@@ -14,14 +14,14 @@ public abstract class Sprite {
 	private SpriteSheet image = null;
 	private Image sprite = null;
 	private HashMap<String, Animation> animations = new HashMap<String, Animation>();
-	private int x;
-	private int y;
+	private float x;
+	private float y;
 
 	public Sprite(String img) {
 		loadImage(img);
 	}
 
-	public Sprite(String img, int x, int y) {
+	public Sprite(String img, float x, float y) {
 		loadImage(img);
 		this.x = x;
 		this.y = y;
@@ -55,19 +55,19 @@ public abstract class Sprite {
 		}
 	}
 
-	public int getX() {
+	public float getX() {
 		return this.x;
 	}
 
-	public int getY() {
+	public float getY() {
 		return this.y;
 	}
 
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 

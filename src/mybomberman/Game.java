@@ -16,12 +16,6 @@ public class Game extends BasicGame {
 	public static TiledMap map;
 
 	public static boolean blocked[][];
-	private Camera camera;
-	private int cur_tile;
-	private int l_tile;
-	private int r_tile;
-	private int u_tile;
-	private int lo_tile;
 	private Player player, player2;
 	private GameControls playerControls, playerControls2;
 
@@ -67,6 +61,9 @@ public class Game extends BasicGame {
 	public void update(GameContainer container, int delta) {
 		playerControls.handleInput(container.getInput());
 		playerControls2.handleInput(container.getInput());
+		for (Player player : players) {
+			player.update(container, delta);
+		}
 	}
 
 	@Override

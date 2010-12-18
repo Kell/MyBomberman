@@ -113,22 +113,21 @@ public class Player extends Sprite {
 	public void setMovementACTION2() {
 	}
 
-	@Override
-	public void render(GameContainer container, Graphics g) {
-		super.render(container, g);
+
+	public void update(GameContainer container, int delta) {
 
 		Animation anim = getAnimation("Animation");
 		boolean walkable;
 		if (left) {
 			anim.setCurrentFrame(2);
-			walkable = CollisionDetection.IsTileWalkable(getX(), getY(), 64,
+			walkable = CollisionDetection.IsTileWalkable((int) getX(),(int) getY(), 64,
 					64, 4);
 			if (walkable) {
 				setX(getX() - speed);
 			}
 		} else if (up) {
 			anim.setCurrentFrame(1);
-			walkable = CollisionDetection.IsTileWalkable(getX(), getY(), 64,
+			walkable = CollisionDetection.IsTileWalkable((int) getX(), (int) getY(), 64,
 					64, 1);
 			if (walkable) {
 				setY(getY() - speed);
@@ -136,29 +135,32 @@ public class Player extends Sprite {
 		} else if (right) {
 
 			anim.setCurrentFrame(3);
-			walkable = CollisionDetection.IsTileWalkable(getX(), getY(), 64,
+			walkable = CollisionDetection.IsTileWalkable((int) getX(), (int) getY(), 64,
 					64, 2);
 
 			if (walkable) {
-				setX((int) ((getX() + speed)));
+				setX((int) ((getX() + (speed))));
 			}
 		} else if (down) {
 
 			anim.setCurrentFrame(0);
-			walkable = CollisionDetection.IsTileWalkable(getX(), getY(), 64,
+			walkable = CollisionDetection.IsTileWalkable((int) getX(), (int) getY(), 64,
 					64, 3);
 			if (walkable) {
 				setY(getY() + speed);
 			}
 		}
 
-		for (int i = 0; i < getBombs().size(); i++) {
-			getBombs().get(i).render(container, g);
-		}
-
 		left = false;
 		up = false;
 		down = false;
 		right = false;
+	}
+	@Override
+	public void render(GameContainer container, Graphics g) {
+		super.render(container, g);
+		for (int i = 0; i < getBombs().size(); i++) {
+			getBombs().get(i).render(container, g);
+		}
 	}
 }
