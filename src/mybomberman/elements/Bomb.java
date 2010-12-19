@@ -16,7 +16,7 @@ import org.newdawn.slick.tiled.TiledMap;
 public class Bomb extends Sprite {
 
 	private long setTime;
-	private long duration = 1500;
+	private long duration = 1650;
 	private long maxTime = 2500;
 	private int explodeRange = 1;
 	private Player player = null;
@@ -44,9 +44,9 @@ public class Bomb extends Sprite {
 
 		setBombLocation();
 		
-		super.addAnimation("Animation", getAnimation());
+		super.addAnimation("Animation", getBombAnimation());
 		super.addAnimation("Explosion", getExplosionAnimation());
-		super.addAnimation("ExplosionLine", getExploLine("res/exp_line.png"));
+		super.addAnimation("ExplosionLine", getExplosionLineAnimation("res/exp_line64.png"));
 	}
 
 	public Bomb(Player player) {
@@ -59,40 +59,37 @@ public class Bomb extends Sprite {
 		
 		setBombLocation();
 
-		super.addAnimation("Animation", getAnimation());
+		super.addAnimation("Animation", getBombAnimation());
 		super.addAnimation("Explosion", getExplosionAnimation());
-		super.addAnimation("ExplosionLine", getExploLine("res/exp_line.png"));
+		super.addAnimation("ExplosionLine", getExplosionLineAnimation("res/exp_line64.png"));
 	}
 
 	/**
-	 * @TODO change name!
 	 * @param img_path
 	 * @return
 	 */
-	private Animation getExploLine(String img_path) {
+	private Animation getExplosionLineAnimation(String img_path) {
 		Animation exp_line = null;
 		SpriteSheet explosion_line = null;
 		try {
-			explosion_line = new SpriteSheet(img_path, 32, 32);
+			explosion_line = new SpriteSheet(img_path, 64, 64);
 		} catch (SlickException e) {
 			System.out.println("Exception: " + e);
 		}
 		exp_line = new Animation();
-		exp_line.setAutoUpdate(false);
-		for (int yframe = 0; yframe < 3; yframe++) {
-			for (int xframe = 0; xframe < 2; xframe++) {
-				exp_line.addFrame(explosion_line.getSprite(xframe, yframe), 150);
-			}
+		//exp_line.setAutoUpdate(false);
+		for (int xframe = 0; xframe < 3; xframe++) {
+				exp_line.addFrame(explosion_line.getSprite(xframe, 0), 150);
 		}
 		return exp_line;
 	}
 
 	/**
-	 * TODO change name!
+	 * 
 	 * 
 	 * @return
 	 */
-	private Animation getAnimation() {
+	private Animation getBombAnimation() {
 		Animation animation = new Animation();
 		for (int frame = 0; frame < 3; frame++) {
 			animation.addFrame(getImage().getSprite(frame, 0), 250);
@@ -101,14 +98,13 @@ public class Bomb extends Sprite {
 	}
 
 	/**
-	 * TODO change name
 	 * 
 	 * @return
 	 */
 	private Animation getExplosionAnimation() {
 		SpriteSheet explosion_center = null;
 		try {
-			explosion_center = new SpriteSheet("res/exp_center.png", 32, 32);
+			explosion_center = new SpriteSheet("res/explo_center64.png", 64, 64);
 		} catch (SlickException e) {
 			System.out.println("Exception: " + e);
 		}
@@ -122,6 +118,10 @@ public class Bomb extends Sprite {
 		return exp_center;
 	}
 	
+	
+	/**
+	 * Set the bomb location - bomb can only be set on a tile, not between them.
+	 **/
 	private void setBombLocation() {
 		float x = (getX() / 64) - ((int) (getX() / 64) );
 		float y = (getY() / 64) - ((int) (getY() / 64));
@@ -160,54 +160,87 @@ public class Bomb extends Sprite {
 	}
 
 	/**
-	 * TODO: else should be done once
+	 * 
+	 * Draws the explosion lines
+	 * @param g - Graphics object for drawing
+	 * @param map - the map
 	 */
 	public void drawExplosion(Graphics g, TiledMap map) {
 		g.drawAnimation(getAnimation("Explosion"), getX(), getY());
 		Animation explosion_anim = getAnimation("ExplosionLine");
+		
+		boolean r_blocked = false;
+		boolean l_blocked = false;
+		boolean u_blocked = false;
+		boolean d_blocked = false;
 		for (int a = 1; a <= explodeRange; a++) {
-			// right
-			boolean blocked = MapHelper.isTileBlocked((int) getX() + 32 + (64 * a), (int) getY() + 32);
+			// ---------- right ----------
+			boolean blocked = MapHelper.isTileBlocked((int) getX() + (64 * a), (int) getY() + 32);
 			if (blocked) {
-				boolean changed = MapHelper.changeBackgroundTile((int) getX() + (66 * a), (int) getY() + 32, 2, 1);
+				boolean changed = false;
+				if (!r_blocked)
+					changed = MapHelper.changeBackgroundTile((int) getX() + (64 * a), (int) getY() + 32, 2, 1);
+				
+				r_blocked = true;
 				if (changed)
-					explodedTiles.add(new Tile((int) getX() + 32 + (66 * a), (int) getY() + 32, 64, 64));
+					explodedTiles.add(new Tile((int) getX() + (64 * a), (int) getY() + 32, 64, 64));
 			} else {
-				explosion_anim.setCurrentFrame(1);
-				g.drawAnimation(explosion_anim, getX() + (66 * a), getY());
+				//explosion_anim.setCurrentFrame(1);
+				explosion_anim.getCurrentFrame().setRotation(90);
+				if (!r_blocked)
+					g.drawAnimation(explosion_anim, getX() + (64 * a), getY());
 			}
 			
-			// left
-			blocked = MapHelper.isTileBlocked((int) getX() - (32 * a), (int) getY()+5);
+			// ---------- left ----------
+			blocked = MapHelper.isTileBlocked((int) getX() - (64 * a), (int) getY() + 32);
 			if (blocked) {
-				boolean changed = MapHelper.changeBackgroundTile((int) getX() - (32 * a), (int) getY() + 32, 4, 1);
+				boolean changed = false;
+				if (!l_blocked)
+					changed = MapHelper.changeBackgroundTile((int) getX() - (64 * a), (int) getY() + 32, 4, 1);
+				
+				l_blocked = true;
 				if (changed)
-					explodedTiles.add(new Tile((int) getX() - (32 * a), (int) getY() + 32, 64, 64));
+					explodedTiles.add(new Tile((int) getX() - (64 * a), (int) getY() + 32, 64, 64));
 			} else {
-				explosion_anim.setCurrentFrame(2);
-				g.drawAnimation(explosion_anim, getX() - (62 * a), getY());
+				//explosion_anim.setCurrentFrame(2);
+				explosion_anim.getCurrentFrame().setRotation(270);
+				if (!l_blocked)
+					g.drawAnimation(explosion_anim, getX() - (64 * a), getY());
 			}
 			
-			// up
-			blocked = MapHelper.isTileBlocked((int) getX() + 32, (int) getY() - (32 * a));
+			// ---------- up ----------
+			blocked = MapHelper.isTileBlocked((int) getX() + 32, (int) getY() - (64 * a));
 			if (blocked) {
-				boolean changed = MapHelper.changeBackgroundTile((int) getX() + 32, (int) getY() - (62 * a), 1, 1);
+				boolean changed = false;
+				if (!u_blocked)
+					changed = MapHelper.changeBackgroundTile((int) getX() + 32, (int) getY() - (64 * a), 1, 1);
+				
+				u_blocked = true;
 				if (changed)
-					explodedTiles.add(new Tile((int) getX() + 32, (int) getY() - (32 * a), 64, 64));
+					explodedTiles.add(new Tile((int) getX() + 32, (int) getY() - (64 * a), 64, 64));
 			} else {
-				explosion_anim.setCurrentFrame(1);
-				g.drawAnimation(explosion_anim, getX(), getY() - (64 * a));
+				//explosion_anim.setCurrentFrame(1);
+				explosion_anim.getCurrentFrame().setRotation(0);
+				if (!u_blocked)
+					g.drawAnimation(explosion_anim, getX(), getY() - (64 * a));
 			}
 			
-			// down
-			blocked = MapHelper.isTileBlocked((int) getX() + 32, (int) getY() + 32 + (64 * a));
+			// ---------- down ----------
+			blocked = MapHelper.isTileBlocked((int) getX() + 32, (int) getY() + (64 * a));
 			if (blocked) {
-				boolean changed = MapHelper.changeBackgroundTile((int) getX() + 32, (int) getY() + 32 + (64 * a), 3, 1);
+				
+				boolean changed = false;
+				if (!d_blocked)
+					changed = MapHelper.changeBackgroundTile((int) getX() + 32, (int) getY() + (64 * a), 3, 1);
+				
+				d_blocked = true;
 				if (changed)
-					explodedTiles.add(new Tile((int) getX() + 32, (int) getY() + 32 + (64 * a), 64, 64));
+					explodedTiles.add(new Tile((int) getX() + 32, (int) getY() + (64 * a), 64, 64));
 			} else {
-				explosion_anim.setCurrentFrame(1);
-				g.drawAnimation(explosion_anim, getX(), getY() + (64 * a));
+				//explosion_anim.setCurrentFrame(1);
+				explosion_anim.getCurrentFrame().setRotation(180);
+				if (!d_blocked)
+					g.drawAnimation(explosion_anim, getX(), getY() + (64 * a));
 			}
 		}
 	}

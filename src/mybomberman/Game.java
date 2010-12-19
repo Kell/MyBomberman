@@ -34,6 +34,10 @@ public class Game extends BasicGame {
 		players = new ArrayList<Player>();
 
 		player = new Player("res/figure.png", 64, 64);
+		// test
+		player.setExplodeRange(2);
+		player.setBombCount(3);
+		
 		players.add(player);
 
 		player2 = new Player("res/figure2.png", 14*64, 64);

@@ -1,5 +1,7 @@
 package mybomberman;
 
+import org.newdawn.slick.tiled.TiledMap;
+
 public class MapHelper {
 	
 	/**
@@ -21,6 +23,9 @@ public class MapHelper {
 		int xTile = getTileNumber(x);
 		int yTile = getTileNumber(y);
 		
+		if (xTile >= Game.map.getWidth() || xTile < 0 || yTile >= Game.map.getHeight() || yTile < 0)
+			return true;
+			
 		if (Game.blocked[xTile][yTile]) {
 			return true;
 		}
@@ -38,7 +43,6 @@ public class MapHelper {
 		int yTile = getTileNumber(y);
 		
 		int tileID = Game.map.getTileId(xTile, yTile, 0);
-		//System.out.println("TileID["+xTile+"]["+yTile+"]: "+tileID);
 		String value = Game.map.getTileProperty(tileID, "breakable", "false");
 		if (value.equals("1")) {
 			return true;
@@ -62,7 +66,6 @@ public class MapHelper {
 		int yTile = getTileNumber(y);
 			
 		if (breakable) {
-			//System.out.println("x:"+xTile+"|y:"+yTile+" direction:"+dir);
 			Game.map.setTileId(xTile, yTile, 0, tileID);
 			
 			return true;
