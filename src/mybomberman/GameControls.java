@@ -1,6 +1,5 @@
 package mybomberman;
 
-import mybomberman.elements.Bomb;
 import mybomberman.elements.Player;
 import mybomberman.elements.powerups.AbstractPowerUp;
 

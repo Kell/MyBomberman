@@ -1,5 +1,8 @@
 package mybomberman.elements;
 
+import mybomberman.MapHelper;
+import mybomberman.states.GamePlayState;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -35,8 +38,8 @@ public class Bomb extends Sprite {
 		this.player = player;
 		this.exploderange = player.getExplodeRange();
 
-		super.addAnimation("Animation", getAni());
-		super.addAnimation("Explosion", getExplosionAni());
+		super.addAnimation("Animation", getAnimation());
+		super.addAnimation("Explosion", getExplosionAnimation());
 		super.addAnimation("ExplosionLine", getExploLine("res/exp_line.png"));
 	}
 
@@ -48,8 +51,8 @@ public class Bomb extends Sprite {
 		this.exploderange = player.getExplodeRange();
 		this.setTime = System.currentTimeMillis();
 
-		super.addAnimation("Animation", getAni());
-		super.addAnimation("Explosion", getExplosionAni());
+		super.addAnimation("Animation", getAnimation());
+		super.addAnimation("Explosion", getExplosionAnimation());
 		super.addAnimation("ExplosionLine", getExploLine("res/exp_line.png"));
 	}
 
@@ -81,7 +84,7 @@ public class Bomb extends Sprite {
 	 * 
 	 * @return
 	 */
-	private Animation getAni() {
+	private Animation getAnimation() {
 		Animation animation = new Animation();
 		for (int frame = 0; frame < 3; frame++) {
 			animation.addFrame(getImage().getSprite(frame, 0), 250);
@@ -94,7 +97,7 @@ public class Bomb extends Sprite {
 	 * 
 	 * @return
 	 */
-	private Animation getExplosionAni() {
+	private Animation getExplosionAnimation() {
 		SpriteSheet explosion_center = null;
 		try {
 			explosion_center = new SpriteSheet("res/exp_center.png", 32, 32);
@@ -119,27 +122,52 @@ public class Bomb extends Sprite {
 		return duration;
 	}
 
+	/**
+	 * TODO: else should be done once
+	 */
 	public void drawExplosion(Graphics g, TiledMap map) {
 		g.drawAnimation(getAnimation("Explosion"), getX(), getY());
-		Animation test = getAnimation("ExplosionLine");
+		Animation explosion_anim = getAnimation("ExplosionLine");
 		for (int a = 1; a <= exploderange; a++) {
 			// right
-			test.setCurrentFrame(1);
-			g.drawAnimation(test, getX() + (64 * a), getY());
-
-			// left
-			test.setCurrentFrame(2);
-			g.drawAnimation(test, getX() - (64 * a), getY());
-
-			// up
-			test.setCurrentFrame(1);
-			g.drawAnimation(test, getX(), getY() - (64 * a));
-
-			// down
-			test.setCurrentFrame(1);
-			g.drawAnimation(test, getX(), getY() + (64 * a));
+			boolean blocked = MapHelper
+					.isTileBlocked(getX() + (66 * a), getY());
+			int blaX = getX() + (66 * a);
+			int blaY = getY();
+			System.out.println("\nblocked right:" + blocked + " x:" + blaX
+					+ "|y:" + blaY);
+			if (blocked) {
+				MapHelper.changeBackgroundTile(getX() + (66 * a), getY(), 2, 1);
+				explosion_anim.setCurrentFrame(1);
+				System.out.println("breakable true :" + a);
+			} else {
+				System.out.println("breakable false :" + a);
+				g.drawAnimation(explosion_anim, getX() + (64 * a), getY());
+			}
+			/*
+			 * // left blocked = MapHelper.isTileBlocked(getX() - (64 * a),
+			 * getY());
+			 * System.out.println("blocked left:"+blocked+" x:"+blaX+"|y:"
+			 * +blaY); if (blocked) { MapHelper.changeBackgroundTile(getX() -
+			 * (64 * a), getY(), 4, 1); explosion_anim.setCurrentFrame(2); }
+			 * else { g.drawAnimation(explosion_anim, getX() - (64 * a),
+			 * getY()); }
+			 * 
+			 * // up blocked = MapHelper.isTileBlocked(getX(), getY() - (66 *
+			 * a));
+			 * System.out.println("blocked up:"+blocked+" x:"+blaX+"|y:"+blaY);
+			 * if (blocked) { MapHelper.changeBackgroundTile(getX(), getY() -
+			 * (66 * a), 1, 1); explosion_anim.setCurrentFrame(1); } else {
+			 * g.drawAnimation(explosion_anim, getX(), getY() - (64 * a)); }
+			 * 
+			 * // down blocked = MapHelper.isTileBlocked(getX(), getY() + (66 *
+			 * a));
+			 * System.out.println("blocked down:"+blocked+" x:"+blaX+"|y:"+blaY
+			 * ); if (blocked) { MapHelper.changeBackgroundTile(getX(), getY() +
+			 * (66 * a), 3, 1); explosion_anim.setCurrentFrame(1); } else {
+			 * g.drawAnimation(explosion_anim, getX(), getY() + (64 * a)); }
+			 */
 		}
-
 	}
 
 	/**
@@ -158,6 +186,7 @@ public class Bomb extends Sprite {
 			g.drawAnimation(getAnimation("Animation"), getX(), getY());
 		} else if (time < (setTime + maxTime)) {
 			g.drawAnimation(getAnimation("Explosion"), getX(), getY());
+			drawExplosion(g, GamePlayState.map);
 		} else {
 			player.removeBomb(this);
 		}

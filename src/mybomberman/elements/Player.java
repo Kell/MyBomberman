@@ -12,6 +12,7 @@ import org.newdawn.slick.Graphics;
 public class Player extends Sprite {
 	private ArrayList<AbstractPowerUp> powerUps = null;
 	private ArrayList<Bomb> bombs = null;
+	private int id;
 	private int bombCount = 1;
 	private int exploderange = 1;
 	private int speed = 2;
@@ -22,6 +23,15 @@ public class Player extends Sprite {
 
 	public Player(String img, int x, int y) {
 		super(img, x, y);
+		powerUps = new ArrayList<AbstractPowerUp>();
+		bombs = new ArrayList<Bomb>();
+		super.setImage();
+		super.addAnimation("Animation", getAnimation());
+	}
+
+	public Player(int id) {
+		super("res/figure.png");
+		this.id = id;
 		powerUps = new ArrayList<AbstractPowerUp>();
 		bombs = new ArrayList<Bomb>();
 		super.setImage();
@@ -160,5 +170,13 @@ public class Player extends Sprite {
 		up = false;
 		down = false;
 		right = false;
+	}
+
+	public void setID(int id) {
+		this.id = id;
+	}
+
+	public int getID() {
+		return id;
 	}
 }
