@@ -2,6 +2,11 @@ package mybomberman.elements;
 
 import mybomberman.MapHelper;
 import mybomberman.states.GamePlayState;
+import java.util.ArrayList;
+
+import mybomberman.Game;
+import mybomberman.MapHelper;
+import mybomberman.Tile;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -13,10 +18,11 @@ import org.newdawn.slick.tiled.TiledMap;
 public class Bomb extends Sprite {
 
 	private long setTime;
-	private long duration = 1500;
+	private long duration = 1650;
 	private long maxTime = 2500;
-	private int exploderange = 1;
+	private int explodeRange = 1;
 	private Player player = null;
+	private ArrayList<Tile> explodedTiles = new ArrayList<Tile>();
 
 	/**
 	 * dummy element - for testing purpose only
@@ -36,11 +42,14 @@ public class Bomb extends Sprite {
 		super.setImage();
 
 		this.player = player;
-		this.exploderange = player.getExplodeRange();
+		this.explodeRange = player.getExplodeRange();
 
-		super.addAnimation("Animation", getAnimation());
+		setBombLocation();
+
+		super.addAnimation("Animation", getBombAnimation());
 		super.addAnimation("Explosion", getExplosionAnimation());
-		super.addAnimation("ExplosionLine", getExploLine("res/exp_line.png"));
+		super.addAnimation("ExplosionLine",
+				getExplosionLineAnimation("res/exp_line64.png"));
 	}
 
 	public Bomb(Player player) {
@@ -48,43 +57,43 @@ public class Bomb extends Sprite {
 		super.setImage();
 
 		this.player = player;
-		this.exploderange = player.getExplodeRange();
+		this.explodeRange = player.getExplodeRange();
 		this.setTime = System.currentTimeMillis();
 
-		super.addAnimation("Animation", getAnimation());
+		setBombLocation();
+
+		super.addAnimation("Animation", getBombAnimation());
 		super.addAnimation("Explosion", getExplosionAnimation());
-		super.addAnimation("ExplosionLine", getExploLine("res/exp_line.png"));
+		super.addAnimation("ExplosionLine",
+				getExplosionLineAnimation("res/exp_line64.png"));
 	}
 
 	/**
-	 * @TODO change name!
 	 * @param img_path
 	 * @return
 	 */
-	private Animation getExploLine(String img_path) {
+	private Animation getExplosionLineAnimation(String img_path) {
 		Animation exp_line = null;
 		SpriteSheet explosion_line = null;
 		try {
-			explosion_line = new SpriteSheet(img_path, 32, 32);
+			explosion_line = new SpriteSheet(img_path, 64, 64);
 		} catch (SlickException e) {
 			System.out.println("Exception: " + e);
 		}
 		exp_line = new Animation();
-		exp_line.setAutoUpdate(false);
-		for (int yframe = 0; yframe < 3; yframe++) {
-			for (int xframe = 0; xframe < 2; xframe++) {
-				exp_line.addFrame(explosion_line.getSprite(xframe, yframe), 150);
-			}
+		// exp_line.setAutoUpdate(false);
+		for (int xframe = 0; xframe < 3; xframe++) {
+			exp_line.addFrame(explosion_line.getSprite(xframe, 0), 150);
 		}
 		return exp_line;
 	}
 
 	/**
-	 * TODO change name!
+	 * 
 	 * 
 	 * @return
 	 */
-	private Animation getAnimation() {
+	private Animation getBombAnimation() {
 		Animation animation = new Animation();
 		for (int frame = 0; frame < 3; frame++) {
 			animation.addFrame(getImage().getSprite(frame, 0), 250);
@@ -93,14 +102,13 @@ public class Bomb extends Sprite {
 	}
 
 	/**
-	 * TODO change name
 	 * 
 	 * @return
 	 */
 	private Animation getExplosionAnimation() {
 		SpriteSheet explosion_center = null;
 		try {
-			explosion_center = new SpriteSheet("res/exp_center.png", 32, 32);
+			explosion_center = new SpriteSheet("res/explo_center64.png", 64, 64);
 		} catch (SlickException e) {
 			System.out.println("Exception: " + e);
 		}
@@ -114,6 +122,26 @@ public class Bomb extends Sprite {
 		return exp_center;
 	}
 
+	/**
+	 * Set the bomb location - bomb can only be set on a tile, not between them.
+	 **/
+	private void setBombLocation() {
+		float x = (getX() / 64) - ((int) (getX() / 64));
+		float y = (getY() / 64) - ((int) (getY() / 64));
+
+		if (x > 0.5) {
+			setX(((int) (getX() / 64) + 1) * 64);
+		} else {
+			setX(((int) (getX() / 64) * 64));
+		}
+
+		if (y > 0.5) {
+			setY(((int) (getY() / 64) + 1) * 64);
+		} else {
+			setY(((int) (getY() / 64) * 64));
+		}
+	}
+
 	public void setDuration(long duration) {
 		this.duration = duration;
 	}
@@ -123,59 +151,126 @@ public class Bomb extends Sprite {
 	}
 
 	/**
-	 * TODO: else should be done once
-	 */
-	public void drawExplosion(Graphics g, TiledMap map) {
-		g.drawAnimation(getAnimation("Explosion"), getX(), getY());
-		Animation explosion_anim = getAnimation("ExplosionLine");
-		for (int a = 1; a <= exploderange; a++) {
-			// right
-			boolean blocked = MapHelper
-					.isTileBlocked(getX() + (66 * a), getY());
-			int blaX = getX() + (66 * a);
-			int blaY = getY();
-			System.out.println("\nblocked right:" + blocked + " x:" + blaX
-					+ "|y:" + blaY);
-			if (blocked) {
-				MapHelper.changeBackgroundTile(getX() + (66 * a), getY(), 2, 1);
-				explosion_anim.setCurrentFrame(1);
-				System.out.println("breakable true :" + a);
-			} else {
-				System.out.println("breakable false :" + a);
-				g.drawAnimation(explosion_anim, getX() + (64 * a), getY());
-			}
-			/*
-			 * // left blocked = MapHelper.isTileBlocked(getX() - (64 * a),
-			 * getY());
-			 * System.out.println("blocked left:"+blocked+" x:"+blaX+"|y:"
-			 * +blaY); if (blocked) { MapHelper.changeBackgroundTile(getX() -
-			 * (64 * a), getY(), 4, 1); explosion_anim.setCurrentFrame(2); }
-			 * else { g.drawAnimation(explosion_anim, getX() - (64 * a),
-			 * getY()); }
-			 * 
-			 * // up blocked = MapHelper.isTileBlocked(getX(), getY() - (66 *
-			 * a));
-			 * System.out.println("blocked up:"+blocked+" x:"+blaX+"|y:"+blaY);
-			 * if (blocked) { MapHelper.changeBackgroundTile(getX(), getY() -
-			 * (66 * a), 1, 1); explosion_anim.setCurrentFrame(1); } else {
-			 * g.drawAnimation(explosion_anim, getX(), getY() - (64 * a)); }
-			 * 
-			 * // down blocked = MapHelper.isTileBlocked(getX(), getY() + (66 *
-			 * a));
-			 * System.out.println("blocked down:"+blocked+" x:"+blaX+"|y:"+blaY
-			 * ); if (blocked) { MapHelper.changeBackgroundTile(getX(), getY() +
-			 * (66 * a), 3, 1); explosion_anim.setCurrentFrame(1); } else {
-			 * g.drawAnimation(explosion_anim, getX(), getY() + (64 * a)); }
-			 */
-		}
-	}
-
-	/**
 	 * 
 	 * @return
 	 */
 	public Player getPlayer() {
 		return this.player;
+	}
+
+	public ArrayList<Tile> getExplodedTiles() {
+		return explodedTiles;
+	}
+
+	/**
+	 * 
+	 * Draws the explosion lines
+	 * 
+	 * @param g
+	 *            - Graphics object for drawing
+	 * @param map
+	 *            - the map
+	 */
+	public void drawExplosion(Graphics g, TiledMap map) {
+		g.drawAnimation(getAnimation("Explosion"), getX(), getY());
+		Animation explosion_anim = getAnimation("ExplosionLine");
+
+		boolean r_blocked = false;
+		boolean l_blocked = false;
+		boolean u_blocked = false;
+		boolean d_blocked = false;
+		for (int a = 1; a <= explodeRange; a++) {
+			// ---------- right ----------
+			boolean blocked = MapHelper.isTileBlocked((int) getX() + (64 * a),
+					(int) getY() + 32);
+			if (blocked) {
+				boolean changed = false;
+				if (!r_blocked)
+					changed = MapHelper.changeBackgroundTile((int) getX()
+							+ (64 * a), (int) getY() + 32, 2, 1);
+
+				r_blocked = true;
+				if (changed)
+					explodedTiles.add(new Tile((int) getX() + (64 * a),
+							(int) getY() + 32, 64, 64));
+			} else {
+				// explosion_anim.setCurrentFrame(1);
+				explosion_anim.getCurrentFrame().setRotation(90);
+				if (!r_blocked)
+					g.drawAnimation(explosion_anim, getX() + (64 * a), getY());
+			}
+
+			// ---------- left ----------
+			blocked = MapHelper.isTileBlocked((int) getX() - (64 * a),
+					(int) getY() + 32);
+			if (blocked) {
+				boolean changed = false;
+				if (!l_blocked)
+					changed = MapHelper.changeBackgroundTile((int) getX()
+							- (64 * a), (int) getY() + 32, 4, 1);
+
+				l_blocked = true;
+				if (changed)
+					explodedTiles.add(new Tile((int) getX() - (64 * a),
+							(int) getY() + 32, 64, 64));
+			} else {
+				// explosion_anim.setCurrentFrame(2);
+				explosion_anim.getCurrentFrame().setRotation(270);
+				if (!l_blocked)
+					g.drawAnimation(explosion_anim, getX() - (64 * a), getY());
+			}
+
+			// ---------- up ----------
+			blocked = MapHelper.isTileBlocked((int) getX() + 32, (int) getY()
+					- (64 * a));
+			if (blocked) {
+				boolean changed = false;
+				if (!u_blocked)
+					changed = MapHelper.changeBackgroundTile((int) getX() + 32,
+							(int) getY() - (64 * a), 1, 1);
+
+				u_blocked = true;
+				if (changed)
+					explodedTiles.add(new Tile((int) getX() + 32, (int) getY()
+							- (64 * a), 64, 64));
+			} else {
+				// explosion_anim.setCurrentFrame(1);
+				explosion_anim.getCurrentFrame().setRotation(0);
+				if (!u_blocked)
+					g.drawAnimation(explosion_anim, getX(), getY() - (64 * a));
+			}
+
+			// ---------- down ----------
+			blocked = MapHelper.isTileBlocked((int) getX() + 32, (int) getY()
+					+ (64 * a));
+			if (blocked) {
+
+				boolean changed = false;
+				if (!d_blocked)
+					changed = MapHelper.changeBackgroundTile((int) getX() + 32,
+							(int) getY() + (64 * a), 3, 1);
+
+				d_blocked = true;
+				if (changed)
+					explodedTiles.add(new Tile((int) getX() + 32, (int) getY()
+							+ (64 * a), 64, 64));
+			} else {
+				// explosion_anim.setCurrentFrame(1);
+				explosion_anim.getCurrentFrame().setRotation(180);
+				if (!d_blocked)
+					g.drawAnimation(explosion_anim, getX(), getY() + (64 * a));
+			}
+		}
+	}
+
+	public void setBlockedTilesFree() {
+		for (Tile t : explodedTiles) {
+			if (t != null) {
+				Game.blocked[MapHelper.getTileNumber(t.getX())][MapHelper
+						.getTileNumber(t.getY())] = false;
+			}
+		}
+		explodedTiles.clear();
 	}
 
 	@Override
@@ -188,6 +283,7 @@ public class Bomb extends Sprite {
 			g.drawAnimation(getAnimation("Explosion"), getX(), getY());
 			drawExplosion(g, GamePlayState.map);
 		} else {
+			setBlockedTilesFree();
 			player.removeBomb(this);
 		}
 	}
