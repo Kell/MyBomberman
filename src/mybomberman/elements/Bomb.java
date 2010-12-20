@@ -1,7 +1,7 @@
 package mybomberman.elements;
 
-import mybomberman.GamePlayState;
 import mybomberman.MapHelper;
+import mybomberman.states.GamePlayState;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;

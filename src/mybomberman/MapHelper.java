@@ -1,5 +1,7 @@
 package mybomberman;
 
+import mybomberman.states.GamePlayState;
+
 public class MapHelper {
 
 	/**
