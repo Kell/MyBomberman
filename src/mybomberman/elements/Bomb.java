@@ -120,14 +120,14 @@ public class Bomb extends Sprite {
 	
 	
 	/**
-	 * Set the bomb location - bomb can only be set on a tile, not between them.
+	 * Set the bomb location - bomb can only be set on a tile and not between them.
 	 **/
 	private void setBombLocation() {
 		float x = (getX() / 64) - ((int) (getX() / 64) );
 		float y = (getY() / 64) - ((int) (getY() / 64));
 		
 		if (x > 0.5) {
-			setX(((int) (getX() / 64) +1 ) * 64);
+			setX(((int) (getX() / 64) + 1 ) * 64);
 		} else {
 			setX(((int) (getX() / 64) * 64));
 		}
