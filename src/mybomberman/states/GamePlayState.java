@@ -72,13 +72,17 @@ public class GamePlayState extends BasicGameState {
 	}
 
 	@Override
-	public void update(GameContainer container, StateBasedGame arg1, int arg2)
+	public void update(GameContainer container, StateBasedGame sbg, int delta)
 			throws SlickException {
 		playerControls.handleInput(container.getInput());
 		playerControls2.handleInput(container.getInput());
 
+		for (Player player : players) {
+			player.update(container, delta);
+		}
+		
 		if (container.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-			arg1.enterState(Game.GAMEMENUSTATE);
+			sbg.enterState(Game.GAMEMENUSTATE);
 		}
 
 	}

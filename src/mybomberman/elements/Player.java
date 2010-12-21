@@ -166,7 +166,7 @@ public class Player extends Sprite {
 		down = false;
 		right = false;
 	}
-<<<<<<< HEAD
+
 
 	public void setID(int id) {
 		this.id = id;
@@ -174,13 +174,15 @@ public class Player extends Sprite {
 
 	public int getID() {
 		return id;
-=======
+	}
+	
+		
 	@Override
 	public void render(GameContainer container, Graphics g) {
 		super.render(container, g);
 		for (int i = 0; i < getBombs().size(); i++) {
 			getBombs().get(i).render(container, g);
 		}
->>>>>>> upstream/master
+
 	}
 }
