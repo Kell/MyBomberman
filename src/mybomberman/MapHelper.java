@@ -1,10 +1,7 @@
 package mybomberman;
 
-<<<<<<< HEAD
 import mybomberman.states.GamePlayState;
-=======
-import org.newdawn.slick.tiled.TiledMap;
->>>>>>> upstream/master
+
 
 public class MapHelper {
 
@@ -29,16 +26,12 @@ public class MapHelper {
 	public static boolean isTileBlocked(int x, int y) {
 		int xTile = getTileNumber(x);
 		int yTile = getTileNumber(y);
-<<<<<<< HEAD
 
-		if (GamePlayState.blocked[xTile][yTile]) {
-=======
 		
-		if (xTile >= Game.map.getWidth() || xTile < 0 || yTile >= Game.map.getHeight() || yTile < 0)
+		if (xTile >= GamePlayState.map.getWidth() || xTile < 0 || yTile >= GamePlayState.map.getHeight() || yTile < 0)
 			return true;
 			
-		if (Game.blocked[xTile][yTile]) {
->>>>>>> upstream/master
+		if (GamePlayState.blocked[xTile][yTile]) {
 			return true;
 		}
 		return false;
@@ -53,17 +46,10 @@ public class MapHelper {
 	public static boolean isTileBreakable(int x, int y) {
 		int xTile = getTileNumber(x);
 		int yTile = getTileNumber(y);
-<<<<<<< HEAD
 
 		int tileID = GamePlayState.map.getTileId(xTile, yTile, 0);
-		System.out.println("TileID: " + tileID);
-		String value = GamePlayState.map.getTileProperty(tileID, "breakable",
-				"false");
-=======
-		
-		int tileID = Game.map.getTileId(xTile, yTile, 0);
-		String value = Game.map.getTileProperty(tileID, "breakable", "false");
->>>>>>> upstream/master
+		String value = GamePlayState.map.getTileProperty(tileID, "breakable", "false");
+
 		if (value.equals("1")) {
 			return true;
 		}
@@ -84,16 +70,10 @@ public class MapHelper {
 		int yTile = getTileNumber(y);
 
 		if (breakable) {
-<<<<<<< HEAD
-			System.out.println("x:" + xTile + "|y:" + yTile + " direction:"
-					+ dir);
+			System.out.println("x:" + xTile + "|y:" + yTile + " direction:"+ dir);
 			GamePlayState.map.setTileId(xTile, yTile, 0, tileID);
-			// Game.blocked[xTile][yTile] = false;;
-=======
-			Game.map.setTileId(xTile, yTile, 0, tileID);
 			
 			return true;
->>>>>>> upstream/master
 		}
 		return false;
 	}
