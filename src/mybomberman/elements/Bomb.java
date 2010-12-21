@@ -48,8 +48,7 @@ public class Bomb extends Sprite {
 
 		super.addAnimation("Animation", getBombAnimation());
 		super.addAnimation("Explosion", getExplosionAnimation());
-		super.addAnimation("ExplosionLine",
-				getExplosionLineAnimation("res/exp_line64.png"));
+		super.addAnimation("ExplosionLine", getExplosionLineAnimation("res/exp_line64.png"));
 	}
 
 	public Bomb(Player player) {
@@ -64,8 +63,7 @@ public class Bomb extends Sprite {
 
 		super.addAnimation("Animation", getBombAnimation());
 		super.addAnimation("Explosion", getExplosionAnimation());
-		super.addAnimation("ExplosionLine",
-				getExplosionLineAnimation("res/exp_line64.png"));
+		super.addAnimation("ExplosionLine", getExplosionLineAnimation("res/exp_line64.png"));
 	}
 
 	/**
@@ -194,7 +192,6 @@ public class Bomb extends Sprite {
 					explodedTiles.add(new Tile((int) getX() + (64 * a),
 							(int) getY() + 32, 64, 64));
 			} else {
-				// explosion_anim.setCurrentFrame(1);
 				explosion_anim.getCurrentFrame().setRotation(90);
 				if (!r_blocked)
 					g.drawAnimation(explosion_anim, getX() + (64 * a), getY());
@@ -214,7 +211,6 @@ public class Bomb extends Sprite {
 					explodedTiles.add(new Tile((int) getX() - (64 * a),
 							(int) getY() + 32, 64, 64));
 			} else {
-				// explosion_anim.setCurrentFrame(2);
 				explosion_anim.getCurrentFrame().setRotation(270);
 				if (!l_blocked)
 					g.drawAnimation(explosion_anim, getX() - (64 * a), getY());
@@ -234,28 +230,23 @@ public class Bomb extends Sprite {
 					explodedTiles.add(new Tile((int) getX() + 32, (int) getY()
 							- (64 * a), 64, 64));
 			} else {
-				// explosion_anim.setCurrentFrame(1);
 				explosion_anim.getCurrentFrame().setRotation(0);
 				if (!u_blocked)
 					g.drawAnimation(explosion_anim, getX(), getY() - (64 * a));
 			}
 
 			// ---------- down ----------
-			blocked = MapHelper.isTileBlocked((int) getX() + 32, (int) getY()
-					+ (64 * a));
+			blocked = MapHelper.isTileBlocked((int) getX() + 32, (int) getY() + (64 * a));
 			if (blocked) {
 
 				boolean changed = false;
 				if (!d_blocked)
-					changed = MapHelper.changeBackgroundTile((int) getX() + 32,
-							(int) getY() + (64 * a), 3, 1);
+					changed = MapHelper.changeBackgroundTile((int) getX() + 32, (int) getY() + (64 * a), 3, 1);
 
 				d_blocked = true;
 				if (changed)
-					explodedTiles.add(new Tile((int) getX() + 32, (int) getY()
-							+ (64 * a), 64, 64));
+					explodedTiles.add(new Tile((int) getX() + 32, (int) getY() + (64 * a), 64, 64));
 			} else {
-				// explosion_anim.setCurrentFrame(1);
 				explosion_anim.getCurrentFrame().setRotation(180);
 				if (!d_blocked)
 					g.drawAnimation(explosion_anim, getX(), getY() + (64 * a));
@@ -266,8 +257,7 @@ public class Bomb extends Sprite {
 	public void setBlockedTilesFree() {
 		for (Tile t : explodedTiles) {
 			if (t != null) {
-				Game.blocked[MapHelper.getTileNumber(t.getX())][MapHelper
-						.getTileNumber(t.getY())] = false;
+				GamePlayState.blocked[MapHelper.getTileNumber(t.getX())][MapHelper.getTileNumber(t.getY())] = false;
 			}
 		}
 		explodedTiles.clear();
