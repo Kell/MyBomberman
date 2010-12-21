@@ -5,6 +5,7 @@ import mybomberman.elements.Player;
 
 public class BombUp extends AbstractPowerUp {
 
+	
 	@Override
 	public void takeEffect(Player p) {
 		p.setBombCount(p.getBombCount() + 1);

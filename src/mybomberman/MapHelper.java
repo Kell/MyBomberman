@@ -1,18 +1,19 @@
 package mybomberman;
 
-import org.newdawn.slick.tiled.TiledMap;
+import mybomberman.states.GamePlayState;
+
 
 public class MapHelper {
-	
+
 	/**
 	 * 
-	 * @param px - value in pixel 
-	 * @return number of Tile 
+	 * @param px - value in pixel
+	 * @return number of Tile
 	 */
 	public static int getTileNumber(int px) {
 		return (int) px / 64;
 	}
-	
+
 	/**
 	 * 
 	 * @param x - x coordinate of a tile
@@ -22,16 +23,17 @@ public class MapHelper {
 	public static boolean isTileBlocked(int x, int y) {
 		int xTile = getTileNumber(x);
 		int yTile = getTileNumber(y);
+
 		
-		if (xTile >= Game.map.getWidth() || xTile < 0 || yTile >= Game.map.getHeight() || yTile < 0)
+		if (xTile >= GamePlayState.map.getWidth() || xTile < 0 || yTile >= GamePlayState.map.getHeight() || yTile < 0)
 			return true;
 			
-		if (Game.blocked[xTile][yTile]) {
+		if (GamePlayState.blocked[xTile][yTile]) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @param x
@@ -41,9 +43,10 @@ public class MapHelper {
 	public static boolean isTileBreakable(int x, int y) {
 		int xTile = getTileNumber(x);
 		int yTile = getTileNumber(y);
-		
-		int tileID = Game.map.getTileId(xTile, yTile, 0);
-		String value = Game.map.getTileProperty(tileID, "breakable", "false");
+
+		int tileID = GamePlayState.map.getTileId(xTile, yTile, 0);
+		String value = GamePlayState.map.getTileProperty(tileID, "breakable", "false");
+
 		if (value.equals("1")) {
 			return true;
 		}
@@ -54,20 +57,16 @@ public class MapHelper {
 	 * 
 	 * @param x
 	 * @param y
-	 * @param dir - int value (1-4) - position from explosion
-	 *  1 - upper tile
-	 *  2 - right tile
-	 *  3 - lower tile
-	 *  4 - left tile 
+	 * @param dir - int value (1-4) - position from explosion 1 - upper tile 2 -
+	 *            right tile 3 - lower tile 4 - left tile
 	 */
 	public static boolean changeBackgroundTile(int x, int y, int dir, int tileID) {
 		boolean breakable = isTileBreakable(x, y);
 		int xTile = getTileNumber(x);
 		int yTile = getTileNumber(y);
-			
+
 		if (breakable) {
-			Game.map.setTileId(xTile, yTile, 0, tileID);
-			
+			GamePlayState.map.setTileId(xTile, yTile, 0, tileID);
 			return true;
 		}
 		return false;
