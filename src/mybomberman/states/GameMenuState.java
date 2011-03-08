@@ -14,7 +14,14 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameMenuState extends BasicGameState {
 
 	private int id;
-	private Image background = null;
+	private Image logo = null;
+	private Image cursor = null;
+	private Image singleplayer = null;
+	private Image multiplayer = null;
+	private Image options = null;
+	private Image exit = null;
+	private int cursor_y = 290;
+	private int entry = 1;
 
 	public GameMenuState(int gamemenustate) {
 		this.id = gamemenustate;
@@ -23,41 +30,71 @@ public class GameMenuState extends BasicGameState {
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		background = new Image("res/main_background.png");
+		logo = new Image("res/logo.png");
+		cursor = new Image("res/bomb_cursor.png");
+		singleplayer = new Image("res/single_player.png");
+		multiplayer = new Image("res/multiplayer.png");
+		options = new Image("res/options.png");
+		exit = new Image("res/exit.png");
 	}
 
 	@Override
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
+	public void render(GameContainer gc, StateBasedGame state, Graphics g)
 			throws SlickException {
-		 background.draw(0, 0);
-
-		g.setColor(Color.red);
-		g.drawString("( 1 ) Start Game", 400, 350);
-		g.drawString("( 2 ) Options", 400, 370);
-		g.drawString("( 3 ) Multiplayer Lobby", 400, 390);
-		g.drawString("( ESC ) Exit ", 400, 410);
-
+		g.setColor(Color.gray);
+		g.fillRect(0, 0, 1024, 768);
+		logo.draw(290, 100);
+		cursor.draw(230, cursor_y);
+		// TODO: check which state called this class
+		// ------ 
+		singleplayer.draw(300, 285);
+		multiplayer.draw(320, 360);
+		// ------
+		//TODO: resume game option 
+		options.draw(380, 435);
+		exit.draw(430, 515);	// different exit while playing
+		
 	}
 
 	@Override
-	public void update(GameContainer container, StateBasedGame arg1, int delta)
+	public void update(GameContainer gc, StateBasedGame state, int delta)
 			throws SlickException {
 
-		if (container.getInput().isKeyPressed(Input.KEY_1)) {
-			arg1.enterState(Game.GAMEPLAYSTATE);
-		} else if (container.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-			System.exit(0);
-		} else if (container.getInput().isKeyPressed(Input.KEY_3)) {
-			arg1.enterState(Game.GAMEMPLOBBY);
-		} else if (container.getInput().isKeyPressed(Input.KEY_2)) {
-			arg1.enterState(Game.GAMEOPTIONSTATE);
-		}
-
+		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			checkMenuEntry(state);
+		} else if (gc.getInput().isKeyPressed(Input.KEY_UP)) {
+			if (entry > 1) {
+				entry--;
+				cursor_y -= 80; 
+			}
+		} else if (gc.getInput().isKeyPressed(Input.KEY_DOWN)) {
+			if (entry < 4 && entry >= 1) { 
+				entry++;
+				cursor_y += 80;
+			}
+		}  
 	}
 
 	@Override
 	public int getID() {
 		return this.id;
+	}
+	
+	private  void checkMenuEntry(StateBasedGame state) {
+		switch (entry) {
+		case 1:
+			state.enterState(Game.GAMEPLAYSTATE);
+			break;
+		case 2:
+			state.enterState(Game.GAMEMPLOBBY);
+			break;
+		case 3:
+			state.enterState(Game.GAMEOPTIONSTATE);
+			break;
+		case 4:
+			System.exit(0);
+			break;
+		}
 	}
 
 }
