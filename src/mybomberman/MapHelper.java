@@ -57,8 +57,11 @@ public class MapHelper {
 	 * 
 	 * @param x
 	 * @param y
-	 * @param dir - int value (1-4) - position from explosion 1 - upper tile 2 -
-	 *            right tile 3 - lower tile 4 - left tile
+	 * @param dir - int value (1-4) - position from explosion 
+	 * 				1 - upper tile 
+	 * 				2 - right tile 
+	 * 				3 - lower tile 
+	 * 				4 - left tile
 	 */
 	public static boolean changeBackgroundTile(int x, int y, int dir, int tileID) {
 		boolean breakable = isTileBreakable(x, y);

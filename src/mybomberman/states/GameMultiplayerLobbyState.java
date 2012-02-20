@@ -31,12 +31,12 @@ public class GameMultiplayerLobbyState extends BasicGameState {
 	}
 
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1)
+	public void init(GameContainer gc, StateBasedGame state)
 			throws SlickException {
 	}
 
 	@Override
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
+	public void render(GameContainer gc, StateBasedGame state, Graphics g)
 			throws SlickException {
 		g.setColor(Color.white);
 		g.drawString("1 start server", 100, 75);
@@ -44,11 +44,11 @@ public class GameMultiplayerLobbyState extends BasicGameState {
 	}
 
 	@Override
-	public void update(GameContainer container, StateBasedGame arg1, int arg2)
+	public void update(GameContainer gc, StateBasedGame state, int arg2)
 			throws SlickException {
-		if (container.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-			arg1.enterState(Game.GAMEMENUSTATE);
-		} else if (container.getInput().isKeyPressed(Input.KEY_1)) {
+		if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+			state.enterState(Game.GAMEMENUSTATE);
+		} else if (gc.getInput().isKeyPressed(Input.KEY_1)) {
 
 			DatagramPacket paket = new DatagramPacket(new byte[length], length);
 			clients = new Vector<InetSocketAddress>();
@@ -97,8 +97,10 @@ public class GameMultiplayerLobbyState extends BasicGameState {
 			} catch (IOException e) {
 			}
 
-		} else if (container.getInput().isKeyPressed(Input.KEY_2)) {
-			arg1.enterState(Game.GAMEMP);
+		} else if (gc.getInput().isKeyPressed(Input.KEY_2)) {
+			state.enterState(Game.GAMEMP);
+		} else if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+			state.enterState(Game.GAMEMENUSTATE);
 		}
 	}
 

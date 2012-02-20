@@ -20,9 +20,12 @@ public class Player extends Sprite {
 	private boolean up = false;
 	private boolean right = false;
 	private boolean down = false;
+	private boolean burned = false;
+	private int lives = 3;
 
-	public Player(String img, int x, int y) {
+	public Player(String img, int x, int y, int id) {
 		super(img, x, y);
+		this.id = id;
 		powerUps = new ArrayList<AbstractPowerUp>();
 		bombs = new ArrayList<Bomb>();
 		super.setImage();
@@ -67,6 +70,22 @@ public class Player extends Sprite {
 		return this.speed;
 	}
 
+	public int getLives() {
+		return this.lives;
+	}
+	
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+	
+	public boolean isBurned() {
+		return this.burned;
+	}
+	
+	public void setBurned(boolean burned) {
+		this.burned = burned;
+	}
+	
 	public int getBombCount() {
 		return this.bombCount;
 	}
@@ -180,6 +199,8 @@ public class Player extends Sprite {
 	@Override
 	public void render(GameContainer container, Graphics g) {
 		super.render(container, g);
+		
+		
 		for (int i = 0; i < getBombs().size(); i++) {
 			getBombs().get(i).render(container, g);
 		}

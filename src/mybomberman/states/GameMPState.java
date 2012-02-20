@@ -50,7 +50,7 @@ public class GameMPState extends BasicGameState implements Runnable {
 
 		players = new ArrayList<Player>();
 
-		player = new Player("res/figure.png", 64, 64);
+		player = new Player("res/figure.png", 64, 64, 1);
 		players.add(player);
 
 		playerControls = new GameControls(player, Input.KEY_LEFT,

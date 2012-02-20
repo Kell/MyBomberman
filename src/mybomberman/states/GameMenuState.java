@@ -15,6 +15,7 @@ public class GameMenuState extends BasicGameState {
 
 	private int id;
 	private Image logo = null;
+	private Image background = null;
 	private Image cursor = null;
 	private Image singleplayer = null;
 	private Image multiplayer = null;
@@ -28,8 +29,9 @@ public class GameMenuState extends BasicGameState {
 	}
 
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1)
+	public void init(GameContainer gc, StateBasedGame statebasedgame)
 			throws SlickException {
+		background = new Image("res/background1.png");
 		logo = new Image("res/logo.png");
 		cursor = new Image("res/bomb_cursor.png");
 		singleplayer = new Image("res/single_player.png");
@@ -39,10 +41,11 @@ public class GameMenuState extends BasicGameState {
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame state, Graphics g)
+	public void render(GameContainer gc, StateBasedGame statebasedgame, Graphics g)
 			throws SlickException {
-		g.setColor(Color.gray);
-		g.fillRect(0, 0, 1024, 768);
+		
+		background.draw(0, 0);
+		
 		logo.draw(290, 100);
 		cursor.draw(230, cursor_y);
 		// TODO: check which state called this class
@@ -57,11 +60,11 @@ public class GameMenuState extends BasicGameState {
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame state, int delta)
+	public void update(GameContainer gc, StateBasedGame statebasedgame, int delta)
 			throws SlickException {
 
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-			checkMenuEntry(state);
+			checkMenuEntry(gc, statebasedgame);
 		} else if (gc.getInput().isKeyPressed(Input.KEY_UP)) {
 			if (entry > 1) {
 				entry--;
@@ -80,16 +83,21 @@ public class GameMenuState extends BasicGameState {
 		return this.id;
 	}
 	
-	private  void checkMenuEntry(StateBasedGame state) {
+	private  void checkMenuEntry(GameContainer gc, StateBasedGame sbg) {
 		switch (entry) {
 		case 1:
-			state.enterState(Game.GAMEPLAYSTATE);
+			try {
+				sbg.init(gc);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+			sbg.enterState(Game.GAMEPLAYSTATE);
 			break;
 		case 2:
-			state.enterState(Game.GAMEMPLOBBY);
+			sbg.enterState(Game.GAMEMPLOBBY);
 			break;
 		case 3:
-			state.enterState(Game.GAMEOPTIONSTATE);
+			sbg.enterState(Game.GAMEOPTIONSTATE);
 			break;
 		case 4:
 			System.exit(0);

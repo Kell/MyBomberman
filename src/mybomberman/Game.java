@@ -12,6 +12,7 @@ public class Game extends StateBasedGame {
 	public static final int GAMEMPLOBBY = 2;
 	public static final int GAMEPLAYSTATE = 3;
 	public static final int GAMEMP = 4;
+	public static final int GAMEOVERSTATE = 5;
 
 	public Game() {
 		super("MyBomberman");
@@ -21,6 +22,7 @@ public class Game extends StateBasedGame {
 		this.addState(new GameMultiplayerLobbyState(GAMEMPLOBBY));
 		this.addState(new GamePlayState(GAMEPLAYSTATE));
 		this.addState(new GameMPState(GAMEMP));
+		this.addState(new GameOverState(GAMEOVERSTATE));
 		this.enterState(GAMEMENUSTATE);
 	}
 
@@ -37,6 +39,7 @@ public class Game extends StateBasedGame {
 		this.getState(GAMEOPTIONSTATE).init(container, this);
 		this.getState(GAMEMPLOBBY).init(container, this);
 		this.getState(GAMEMP).init(container, this);
+		this.getState(GAMEOVERSTATE).init(container, this);
 	}
 
 }
