@@ -18,7 +18,7 @@ public class Bomb extends Sprite {
 	private long setTime;
 	private long duration = 1650;
 	private long maxTime = 2500;
-	private int explodeRange = 1;
+	private int explodeRange = 2;
 	private Player player = null;
 	private ArrayList<Tile> explodedTiles = new ArrayList<Tile>();
 
@@ -178,6 +178,8 @@ public class Bomb extends Sprite {
 		boolean d_blocked = false;
 		int explosionXCorrdinate = 0;
 		int explosionYCorrdinate = 0;
+		int changeTileID = 3;
+		int changeLowerTileID = 3;
 		
 		for (int a = 1; a <= explodeRange; a++) {
 			
@@ -185,22 +187,38 @@ public class Bomb extends Sprite {
 			explosionXCorrdinate = (int) getX() + (64 * a);
 			explosionYCorrdinate = (int) getY() + 32;
 			boolean blocked = MapHelper.isTileBlocked(explosionXCorrdinate, explosionYCorrdinate);
+			boolean breakable = MapHelper.isTileBreakable(explosionXCorrdinate, explosionYCorrdinate);
 			
-			if (blocked) {
+			
+			//check if tile with upper shadow is needed
+			if(MapHelper.isTileBlocked(explosionXCorrdinate, explosionYCorrdinate-64))
+				changeTileID = 4;
+			else
+				changeTileID = 3;
+			
+			if (breakable) {
 				boolean changed = false;
 				if (!r_blocked)
-					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate, 2, 1);
+				{
+					System.out.println("RIGHT => change lower tile: "+(explosionXCorrdinate/64)+"|"+(explosionYCorrdinate/64+1));
+					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate, 2, changeTileID);
+					if(GamePlayState.map.getTileId(explosionXCorrdinate/64, (explosionYCorrdinate/64)+1, 0) == 4)
+					{
+						
+						MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate+64, 2, changeLowerTileID);
+					}
+				}
 
 				r_blocked = true;
 				if (changed)
 					explodedTiles.add(new Tile(explosionXCorrdinate, explosionYCorrdinate, 64, 64));
-			} else {
+			} else if (!blocked) {
 				explosion_anim.getCurrentFrame().setRotation(90);
 				if (!r_blocked) 
 					g.drawAnimation(explosion_anim, explosionXCorrdinate, getY());
 				
 				//CHECK WHETHER PLAYER GET BURNED BY EXPLOSION
-				isPlayerBurned(players, explosionXCorrdinate, (int) getY(), 2);
+//				isPlayerBurned(players, explosionXCorrdinate, (int) getY(), 2);
 				
 			}
 
@@ -208,64 +226,104 @@ public class Bomb extends Sprite {
 			explosionXCorrdinate = (int) getX() - (64 * a);
 			explosionYCorrdinate = (int) getY() + 32;
 			blocked = MapHelper.isTileBlocked(explosionXCorrdinate, explosionYCorrdinate);
-			if (blocked) {
+			breakable = MapHelper.isTileBreakable(explosionXCorrdinate, explosionYCorrdinate);
+			
+			
+			//check if tile with upper shadow is needed
+			if(MapHelper.isTileBlocked(explosionXCorrdinate, explosionYCorrdinate-64))
+				changeTileID = 4;
+			else
+				changeTileID = 3;
+			
+			
+			if (breakable) {
 				boolean changed = false;
 				if (!l_blocked)
-					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate, 4, 1);
+				{
+					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate, 4, changeTileID);
+					if(GamePlayState.map.getTileId(explosionXCorrdinate/64, (explosionYCorrdinate/64)+1, 0) == 4)
+						MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate+64, 2, changeLowerTileID);
+				}
 
 				l_blocked = true;
 				if (changed)
 					explodedTiles.add(new Tile(explosionXCorrdinate, explosionYCorrdinate, 64, 64));
-			} else {
+			} else if (!blocked) {
 				explosion_anim.getCurrentFrame().setRotation(270);
 				if (!l_blocked)
 					g.drawAnimation(explosion_anim, explosionXCorrdinate, getY());
 				
 				//CHECK WHETHER PLAYER GET BURNED BY EXPLOSION
-				isPlayerBurned(players, explosionXCorrdinate, (int) getY(), 4);
+//				isPlayerBurned(players, explosionXCorrdinate, (int) getY(), 4);
 			}
 
 			// ---------- UP ----------
 			explosionXCorrdinate = (int) getX() + 32;
 			explosionYCorrdinate = (int) getY() - (64 * a);
 			blocked = MapHelper.isTileBlocked(explosionXCorrdinate, explosionYCorrdinate);
-			if (blocked) {
+			breakable = MapHelper.isTileBreakable(explosionXCorrdinate, explosionYCorrdinate);
+			
+			//check if tile with upper shadow is needed
+			if(MapHelper.isTileBlocked(explosionXCorrdinate, explosionYCorrdinate-64))
+				changeTileID = 4;
+			else
+				changeTileID = 3;
+			
+			if (breakable) {
 				boolean changed = false;
 				if (!u_blocked)
-					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate,	explosionYCorrdinate, 1, 1);
+				{
+					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate,	explosionYCorrdinate, 1, changeTileID);
+					if(GamePlayState.map.getTileId(explosionXCorrdinate/64, (explosionYCorrdinate/64)+1, 0) == 4)
+						MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate+64, 2, changeLowerTileID);
+				}
 
 				u_blocked = true;
 				if (changed)
 					explodedTiles.add(new Tile(explosionXCorrdinate, explosionYCorrdinate, 64, 64));
-			} else {
+			} else if (!blocked) {
 				explosion_anim.getCurrentFrame().setRotation(0);
 				if (!u_blocked)
 					g.drawAnimation(explosion_anim, getX(), explosionYCorrdinate);
 				
 				//CHECK WHETHER PLAYER GET BURNED BY EXPLOSION
-				isPlayerBurned(players, (int) getX(), explosionYCorrdinate, 1);
+//				isPlayerBurned(players, (int) getX(), explosionYCorrdinate, 1);
 			}
 
 			// ---------- DOWN ----------
 			explosionXCorrdinate = (int) getX() + 32;
 			explosionYCorrdinate = (int) getY() + (64 * a);
 			blocked = MapHelper.isTileBlocked(explosionXCorrdinate, explosionYCorrdinate);
-			if (blocked) {
+			breakable = MapHelper.isTileBreakable(explosionXCorrdinate, explosionYCorrdinate);
+			
+			//check if tile with upper shadow is needed
+			if(MapHelper.isTileBlocked(explosionXCorrdinate, explosionYCorrdinate-64))
+				changeTileID = 4;
+			else
+				changeTileID = 3;
+			
+			if (breakable) {
 
 				boolean changed = false;
 				if (!d_blocked)
-					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate,explosionYCorrdinate, 3, 1);
+				{
+					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate,explosionYCorrdinate, 3, changeTileID);
+					if(GamePlayState.map.getTileId(explosionXCorrdinate/64, (explosionYCorrdinate/64)+1, 0) == 4) 
+					{
+						MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate+64, 2, changeLowerTileID);
+					}
+				}
 
 				d_blocked = true;
 				if (changed)
 					explodedTiles.add(new Tile(explosionXCorrdinate, explosionYCorrdinate, 64, 64));
-			} else {
+			} else if (!blocked){
 				explosion_anim.getCurrentFrame().setRotation(180);
 				if (!d_blocked)
 					g.drawAnimation(explosion_anim, getX(), explosionYCorrdinate);
 				
 				//CHECK WHETHER PLAYER GET BURNED BY EXPLOSION
-				isPlayerBurned(players, (int) getX(), explosionYCorrdinate, 3);
+//				isPlayerBurned(players, (int) getX(), explosionYCorrdinate, 3);
 			}
 		}
 	}
@@ -300,11 +358,11 @@ public class Bomb extends Sprite {
 			
 		
 		for (Player player : players) {
-//			//DEBUG
-//			if (player.getID() == 1) {
+			//DEBUG
+			if (player.getID() == 1) {
 //				System.out.println("player x:"+player.getX()+" Exp X:"+explosionX);
 //				System.out.println("player y:"+player.getX()+" Exp Y:"+explosionY);
-//			}
+			}
 //			System.out.println("player:"+player.getID());
 		
 			//TODO: check whether player  got the exact position as the explosion tile 

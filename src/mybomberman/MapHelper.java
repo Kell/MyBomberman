@@ -68,10 +68,7 @@ public class MapHelper {
 		int xTile = getTileNumber(x);
 		int yTile = getTileNumber(y);
 
-		if (breakable) {
 			GamePlayState.map.setTileId(xTile, yTile, 0, tileID);
 			return true;
-		}
-		return false;
 	}
 }
