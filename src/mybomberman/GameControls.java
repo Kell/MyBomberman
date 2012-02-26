@@ -30,8 +30,10 @@ public class GameControls {
 			player.setMovementUP();
 		} else if (input.isKeyDown(getDown())) {
 			player.setMovementDOWN();
-		} else if (input.isKeyPressed(getAction())) {
-			player.addBomb();
+		} 
+		
+		if (input.isKeyPressed(getAction())) {
+			player.setBomb();
 		} else if (input.isKeyPressed(getAction2())) {
 			player.setBombCount(player.getBombCount() + 1);
 			System.out.println(player.getBombCount());
