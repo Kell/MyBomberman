@@ -200,13 +200,9 @@ public class Bomb extends Sprite {
 				boolean changed = false;
 				if (!r_blocked)
 				{
-					System.out.println("RIGHT => change lower tile: "+(explosionXCorrdinate/64)+"|"+(explosionYCorrdinate/64+1));
 					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate, 2, changeTileID);
 					if(GamePlayState.map.getTileId(explosionXCorrdinate/64, (explosionYCorrdinate/64)+1, 0) == 4)
-					{
-						
 						MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate+64, 2, changeLowerTileID);
-					}
 				}
 
 				r_blocked = true;
@@ -218,7 +214,7 @@ public class Bomb extends Sprite {
 					g.drawAnimation(explosion_anim, explosionXCorrdinate, getY());
 				
 				//CHECK WHETHER PLAYER GET BURNED BY EXPLOSION
-//				isPlayerBurned(players, explosionXCorrdinate, (int) getY(), 2);
+				isPlayerBurned(players, explosionXCorrdinate, (int) getY(), 2);
 				
 			}
 
@@ -254,7 +250,7 @@ public class Bomb extends Sprite {
 					g.drawAnimation(explosion_anim, explosionXCorrdinate, getY());
 				
 				//CHECK WHETHER PLAYER GET BURNED BY EXPLOSION
-//				isPlayerBurned(players, explosionXCorrdinate, (int) getY(), 4);
+				isPlayerBurned(players, explosionXCorrdinate, (int) getY(), 4);
 			}
 
 			// ---------- UP ----------
@@ -287,7 +283,7 @@ public class Bomb extends Sprite {
 					g.drawAnimation(explosion_anim, getX(), explosionYCorrdinate);
 				
 				//CHECK WHETHER PLAYER GET BURNED BY EXPLOSION
-//				isPlayerBurned(players, (int) getX(), explosionYCorrdinate, 1);
+				isPlayerBurned(players, (int) getX(), explosionYCorrdinate, 1);
 			}
 
 			// ---------- DOWN ----------
@@ -309,9 +305,7 @@ public class Bomb extends Sprite {
 				{
 					changed = MapHelper.changeBackgroundTile(explosionXCorrdinate,explosionYCorrdinate, 3, changeTileID);
 					if(GamePlayState.map.getTileId(explosionXCorrdinate/64, (explosionYCorrdinate/64)+1, 0) == 4) 
-					{
 						MapHelper.changeBackgroundTile(explosionXCorrdinate, explosionYCorrdinate+64, 2, changeLowerTileID);
-					}
 				}
 
 				d_blocked = true;
@@ -323,7 +317,7 @@ public class Bomb extends Sprite {
 					g.drawAnimation(explosion_anim, getX(), explosionYCorrdinate);
 				
 				//CHECK WHETHER PLAYER GET BURNED BY EXPLOSION
-//				isPlayerBurned(players, (int) getX(), explosionYCorrdinate, 3);
+				isPlayerBurned(players, (int) getX(), explosionYCorrdinate, 3);
 			}
 		}
 	}
@@ -337,27 +331,27 @@ public class Bomb extends Sprite {
 		int explosionY = y;
 		int explosionYEnd = 0;
 		
+		// 62 some Player Buffer
 		switch (direction) {
 			case 1:
-				explosionXEnd = explosionX + 64;
-				explosionYEnd = explosionYEnd - 64;
+				explosionXEnd = explosionX + 62;
+				explosionYEnd = explosionY - 62;
 				break;
 			case 2:
-				explosionXEnd = explosionX + 64;
-				explosionYEnd = explosionYEnd + 64;
+				explosionXEnd = explosionX + 62;
+				explosionYEnd = explosionY + 62;
 				break;
 			case 3:
-				explosionXEnd = explosionX + 64;
-				explosionYEnd = explosionYEnd + 64;
+				explosionXEnd = explosionX + 62;
+				explosionYEnd = explosionY + 62;
 				break;
 			case 4:
-				explosionXEnd = explosionX - 64;
-				explosionYEnd = explosionYEnd + 64;
+				explosionXEnd = explosionX + 62;
+				explosionYEnd = explosionY + 62;
 				break;
 		}
 			
-		
-		for (Player player : players) {
+		for (Player player: players) {
 			//DEBUG
 			if (player.getID() == 1) {
 //				System.out.println("player x:"+player.getX()+" Exp X:"+explosionX);
@@ -396,6 +390,7 @@ public class Bomb extends Sprite {
 		explodedTiles.clear();
 	}
 
+	
 	@Override
 	public void render(GameContainer container, Graphics g) {
 		long time = System.currentTimeMillis();
