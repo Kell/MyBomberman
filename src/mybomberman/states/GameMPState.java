@@ -46,7 +46,7 @@ public class GameMPState extends BasicGameState implements Runnable {
 			throws SlickException {
 		container.setVSync(true);
 		container.setTargetFrameRate(60);
-		map = new TiledMap("res/map.tmx");
+		map = new TiledMap("res/map1.tmx");
 
 		players = new ArrayList<Player>();
 
